@@ -6,7 +6,7 @@ module.exports = db;
 var User = require('./models/user');
 var Products = require('./models/products');
 var Category = require('./models/product_category');
-var Review = require('./models/reviews');
+var Review = require('./models/review');
 var Order = require('./models/order');
 
 // if we had more models, we could associate them in this file
@@ -15,19 +15,11 @@ var Order = require('./models/order');
 User.hasMany(Review);
 User.hasMany(Order);
 
-//order has many products:
-Order.hasMany(Products);
-//order has one User:
-Order.hasOne(User);
+//join table
+Products.belongsToMany(Order, { through: 'product_of_order' });
 
 //join table: a product can have multiple product types
-Product.belongsToMany(ProductType);
-//join table: a product can have multiple reviews
-Product.hasMany(Review);
+Products.belongsToMany(Category, { through: 'product_category'});
 
-//relationship needed: product has one farmer/originator/seller
+Products.hasMany(Review);
 
-//review has one productId
-Review.hasOne(Product);
-//review has one UserId
-Review.hasOne(User);

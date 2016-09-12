@@ -4,8 +4,6 @@ var _ = require('lodash');
 var Sequelize = require('sequelize');
 
 var db = require('../_db');
-var ProductCategory = require('./product_category.js');
-var Review = require('./review');
 
 module.exports = db.define('product', {
     name: {
@@ -24,7 +22,12 @@ module.exports = db.define('product', {
       type: Sequelize.STRING
     },
     quantity: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    source: {
+      type: Sequelize.STRING,
+      allowNull: false
     }
 }, {
   hooks: {
