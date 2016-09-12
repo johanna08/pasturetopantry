@@ -86,8 +86,18 @@
 
         };
 
+        this.signup = function(username, email, password) {
+            return $http.post('/api/signup', {username, email, password})
+            .then(function(response) {
+                return response.data;
+            })
+            .catch(function () {
+                    return $q.reject({ message: 'Signup unsuccessful.' });
+                });
+        };
+
         this.login = function (credentials) {
-            return $http.post('/login', credentials)
+            return $http.post('/api/login', credentials)
                 .then(onSuccessfulLogin)
                 .catch(function () {
                     return $q.reject({ message: 'Invalid login credentials.' });
@@ -95,7 +105,7 @@
         };
 
         this.logout = function () {
-            return $http.get('/logout').then(function () {
+            return $http.get('/api/logout').then(function () {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
             });
