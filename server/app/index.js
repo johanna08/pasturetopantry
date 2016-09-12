@@ -1,8 +1,9 @@
 'use strict';
-var path = require('path');
-var express = require('express');
-var app = express();
-var bodyParser = require("body-parser");
+const path = require('path');
+const express = require('express');
+const app = express();
+const bodyParser = require("body-parser");
+const session = require("express-session");
 
 module.exports = function (db) {
 
@@ -13,6 +14,9 @@ module.exports = function (db) {
     // use the body parser
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true}));
+
+    // initiate a session
+    app.use(session({secret: "PLACEHOLDER"}));
 
     // Routes that will be accessed via AJAX should be prepended with
     // /api so they are isolated from our GET /* wildcard.
