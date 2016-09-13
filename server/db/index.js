@@ -17,9 +17,10 @@ User.hasMany(Order);
 
 //join table
 Products.belongsToMany(Order, { through: 'product_of_order' });
+Order.belongsToMany(Products, { through: 'product_of_order' });
 
 //join table: a product can have multiple product types
 Products.belongsToMany(Category, { through: 'product_category'});
+Category.belongsToMany(Products, {through: 'product_category'});
 
 Products.hasMany(Review);
-
