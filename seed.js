@@ -21,6 +21,7 @@ var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
 const Products = db.model('product');
+const Categories = db.model('category');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -54,7 +55,7 @@ var seedProducts = function () {
             source: "Jo's Farm",
             description: 'Wild blueberries',
             imageUrl: 'http://pngimg.com/upload/banana_PNG835.png',
-            category: 'fruit'
+            categoryId: 1
         },
         {
             name: 'bananas',
@@ -63,7 +64,7 @@ var seedProducts = function () {
             source: "Jo's Farm",
             description: 'free-trade bananas',
             imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg',
-            category: 'fruit'
+            categoryId: 1
         },
         {
             name: 'eggs',
@@ -72,7 +73,7 @@ var seedProducts = function () {
             source: "Jo's Farm",
             description: 'free-range, grass-fed',
             imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Egg_colours.jpg',
-            category: 'dairy'
+            categoryId: 2
         }
 
     ];
@@ -85,12 +86,38 @@ var seedProducts = function () {
 
 };
 
+var seedCategories = function () {
+
+    var categories = [
+        {
+            type_name: 'fruit',
+        },
+        {
+            type_name: 'dairy',
+        },
+        {
+            type_name: 'meat',
+        }
+
+    ];
+
+    var creatingCategories = categories.map(function (categoryObj) {
+        return Categories.create(categoryObj);
+    });
+
+    return Promise.all(creatingCategories);
+
+};
+
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
     })
     .then(function(){
         return seedProducts();
+    })
+    .then(function(){
+        return seedCategories();
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));

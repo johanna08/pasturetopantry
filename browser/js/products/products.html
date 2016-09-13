@@ -1,7 +1,11 @@
 <div>
  <h3>Products</h3>
  <div class="row">
-   <div class="col-xs-4" ng-repeat="product in products">
+   <div class="col-xs-3">
+    <h2>Categories</h2>
+    <a ng-repeat="category in categories">{{category}}</a>
+   </div>
+   <div class="col-xs-3" ng-repeat="product in products">
      <a class="thumbnail"> <!-- ui-sref="album({albumId: album.id})" -->
        <img ng-src="{{ product.imageUrl }}">
        <div class="caption">
