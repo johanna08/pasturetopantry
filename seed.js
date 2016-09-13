@@ -20,6 +20,7 @@ name in the environment files.
 var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
+const Products = db.model('product');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -43,9 +44,53 @@ var seedUsers = function () {
 
 };
 
+var seedProducts = function () {
+
+    var products = [
+        {
+            name: 'blueberries',
+            price: 100,
+            quantity: 5,
+            source: "Jo's Farm",
+            description: 'Wild blueberries',
+            imageUrl: 'http://pngimg.com/upload/banana_PNG835.png',
+            category: 'fruit'
+        },
+        {
+            name: 'bananas',
+            price: 1,
+            quantity: 1,
+            source: "Jo's Farm",
+            description: 'free-trade bananas',
+            imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg',
+            category: 'fruit'
+        },
+        {
+            name: 'eggs',
+            price: 5,
+            quantity: 12,
+            source: "Jo's Farm",
+            description: 'free-range, grass-fed',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Egg_colours.jpg',
+            category: 'dairy'
+        }
+
+    ];
+
+    var creatingProducts = products.map(function (productObj) {
+        return Products.create(productObj);
+    });
+
+    return Promise.all(creatingProducts);
+
+};
+
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
+    })
+    .then(function(){
+        return seedProducts();
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
