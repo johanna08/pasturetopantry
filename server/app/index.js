@@ -1,7 +1,8 @@
 'use strict';
-var path = require('path');
-var express = require('express');
-var app = express();
+const path = require('path');
+const express = require('express');
+const app = express();
+const session = require("express-session");
 
 module.exports = function (db) {
 
@@ -9,6 +10,14 @@ module.exports = function (db) {
     // function located at server/app/configure/index.js
     require('./configure')(app, db);
 
+    // initiate a session
+    app.use(session({secret: "PLACEHOLDER"}));
+    app.get('/session', function(req,res,next){
+        if(req.session.user){
+            res.send(req.session.user);
+        }
+        res.sendStatus(401);
+    });
     // Routes that will be accessed via AJAX should be prepended with
     // /api so they are isolated from our GET /* wildcard.
     app.use('/api', require('./routes'));
