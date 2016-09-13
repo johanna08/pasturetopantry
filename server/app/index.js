@@ -17,7 +17,12 @@ module.exports = function (db) {
 
     // initiate a session
     app.use(session({secret: "PLACEHOLDER"}));
-
+    app.get('/session', function(req,res,next){
+        if(req.session.user){
+            res.send(req.session.user);
+        }
+        res.sendStatus(401);
+    });
     // Routes that will be accessed via AJAX should be prepended with
     // /api so they are isolated from our GET /* wildcard.
     app.use('/api', require('./routes'));

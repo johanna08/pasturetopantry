@@ -13,7 +13,7 @@ router.post('/', function(req, res, next){
   })
   .then(function(user){
     sess.userId = user.id;
-    res.status(201).send({ username: user.username, id: user.id });
+    res.status(201).send({ email: user.email, id: user.id });
   })
   .catch(next);
 });

@@ -51,7 +51,7 @@
     app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q) {
 
         function onSuccessfulLogin(response) {
-            var user = response.data.user;
+            var user = response.data;
             Session.create(user);
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
             return user;
@@ -86,14 +86,15 @@
 
         };
 
-        this.signup = function(username, email, password) {
-            return $http.post('/api/signup', {username, email, password})
+        this.signup = function(credentials) {
+            return $http.post('/api/signup', credentials)
             .then(function(response) {
-                return response.data;
+                return response;
             })
+            .then(onSuccessfulLogin)
             .catch(function () {
                     return $q.reject({ message: 'Signup unsuccessful.' });
-                });
+            });
         };
 
         this.login = function (credentials) {
@@ -105,7 +106,7 @@
         };
 
         this.logout = function () {
-            return $http.get('/api/logout').then(function () {
+            return $http.post('/api/logout').then(function () {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
             });
@@ -127,7 +128,7 @@
 
         this.user = null;
 
-        this.create = function (sessionId, user) {
+        this.create = function (user) {
             this.user = user;
         };
 

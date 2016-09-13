@@ -9,7 +9,7 @@ router.post('/', function(req, res, next){
     if (user) {
       if(user.correctPassword(req.body.password)) {
         //respond with username and id to avoid sending private info
-        res.status(200).send({ username: user.username, id: user.id });
+        res.status(200).send({ email: user.email, id: user.id });
         sess.userId = user.id;
       } else {
         res.status(401).send("Incorrect password.");

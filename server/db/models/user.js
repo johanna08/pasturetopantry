@@ -6,11 +6,11 @@ var Sequelize = require('sequelize');
 var db = require('../_db');
 
 module.exports = db.define('user', {
-    username: {
-        type: Sequelize.STRING
-    },
     email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: Sequelize.STRING
