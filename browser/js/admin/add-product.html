@@ -1,0 +1,37 @@
+<div ng-controller="AdminCtrl" class="addProduct">
+  <form name="addProductForm">
+    <fieldset>
+      <div class="form-group">
+        <label for="name">Product Name</label>
+        <div class="col-xs-10">
+          <input name="name" type="text" ng-model="product.name" required>
+        </div>
+        <label for="price">Product Price</label>
+        <div class="col-xs-10">
+          <input name="price" type="number" ng-model="product.price" min="0" step=".01" required>
+        </div>
+        <label for="description">Product Description</label>
+        <div class="col-xs-10">
+          <textarea name="description" ng-model="product.description" required>
+          </textarea>
+        </div>
+        <label for="quantity">Product Quantity</label>
+        <div class="col-xs-10">
+          <input name="quantity" type="number" ng-model="product.quantity" required min="1">
+        </div>
+        <label for="categories">Product Categories</label>
+        <div class="col-xs-10">
+          <form name="categoryForm">
+            Category: <input type="checkbox" name="{{}}" value="{{}}" ng-model="product.categories"/><br/>
+          </form>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-10 col-xs-offset-2">
+          <button type="submit" class="btn btn-success">Add Product</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
