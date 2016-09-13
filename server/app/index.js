@@ -2,7 +2,6 @@
 const path = require('path');
 const express = require('express');
 const app = express();
-const bodyParser = require("body-parser");
 const session = require("express-session");
 
 module.exports = function (db) {
@@ -10,10 +9,6 @@ module.exports = function (db) {
     // Pass our express application pipeline into the configuration
     // function located at server/app/configure/index.js
     require('./configure')(app, db);
-
-    // use the body parser
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true}));
 
     // initiate a session
     app.use(session({secret: "PLACEHOLDER"}));
