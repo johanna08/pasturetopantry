@@ -54,8 +54,7 @@ var seedProducts = function () {
             quantity: 5,
             source: "Jo's Farm",
             description: 'Wild blueberries',
-            imageUrl: 'http://pngimg.com/upload/banana_PNG835.png',
-            categoryId: 1
+            imageUrl: 'http://pngimg.com/upload/banana_PNG835.png'
         },
         {
             name: 'bananas',
@@ -63,8 +62,7 @@ var seedProducts = function () {
             quantity: 1,
             source: "Jo's Farm",
             description: 'free-trade bananas',
-            imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg',
-            categoryId: 1
+            imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg'
         },
         {
             name: 'eggs',
@@ -72,8 +70,7 @@ var seedProducts = function () {
             quantity: 12,
             source: "Jo's Farm",
             description: 'free-range, grass-fed',
-            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Egg_colours.jpg',
-            categoryId: 2
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Egg_colours.jpg'
         }
 
     ];
@@ -118,6 +115,18 @@ db.sync({ force: true })
     })
     .then(function(){
         return seedCategories();
+    })
+    .then(function(){
+        return Products.findAll();
+    })
+    .then(function(products){
+        return products.map(function(eachProduct){
+            if(eachProduct.name === 'eggs') return eachProduct.setCategories([2]);
+            return  eachProduct.setCategories([1]);
+        })
+    })
+    .then(function(promises){
+        return Promise.all(promises);
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));

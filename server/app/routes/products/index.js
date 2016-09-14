@@ -4,6 +4,7 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Category = db.model('category');
 const Review = db.model('review');
+var chalk = require('chalk');
 
 module.exports = router;
 
@@ -15,10 +16,9 @@ router.get('/', function(req,res,next){
   .catch(next);
 });
 
-router.get('/:productId', function(req, res, next) {
+router.get('/item/:productId', function(req, res, next) {
   Products.findOne({where: {id: req.params.productId}, include: [Review]})
   .then(function(product) {
-
     if (!product) {
       var err = new Error('Product does not exist!');
       err.status = 404;
@@ -29,8 +29,16 @@ router.get('/:productId', function(req, res, next) {
   .catch(next);
 });
 
-router.get('/categories/:category', function(req, res, next) {
-  Category.findOne({where: {type_name: req.params.category}})
+router.get('/allcategories', function(req, res, next){
+  Category.findAll()
+  .then(function(response){
+    res.send(response);
+  })
+  .catch(next);
+});
+
+router.get('/categories/:categoryId', function(req, res, next) {
+  Category.findOne({where: {id: req.params.categoryId}})
   .then(function(category) {
     return category.getProducts();
   })
