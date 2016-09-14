@@ -19,16 +19,20 @@
         <div class="col-xs-10">
           <input name="quantity" type="number" ng-model="product.quantity" required min="1">
         </div>
+        <label for="source">Product Source</label>
+        <div class="col-xs-10">
+          <input name="source" type="text" ng-model="product.source" required>
+        </div>
         <label for="categories">Product Categories</label>
         <div class="col-xs-10">
           <form name="categoryForm">
-            Category: <input type="checkbox" name="{{}}" value="{{}}" ng-model="product.categories"/><br/>
+            <!-- <input ng-repeat="category of categories" type="checkbox" name="category" value="{{category.type_name}}">{{category.type_name}}<br> -->
           </form>
         </div>
       </div>
       <div class="form-group">
         <div class="col-xs-10 col-xs-offset-2">
-          <button type="submit" class="btn btn-success">Add Product</button>
+          <button ng-click="addProduct(product)" type="submit" class="btn btn-success">Add Product</button>
         </div>
       </div>
     </fieldset>

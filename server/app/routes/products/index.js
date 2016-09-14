@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/:productId', function(req, res, next) {
-  Products.findOne({where: {id: req.params.productId}, include: [Review]})
+  Products.findOne({where: {id: req.params.productId}, include: [Review, Category]})
   .then(function(product) {
 
     if (!product) {
@@ -52,6 +52,8 @@ router.delete('/:productId', function(req, res, next) {
   .catch(next);
 });
 
+//gets all products in a given category
+//we have a belongsToMany relationship between products/category --> generates a getProducts() getter method
 router.get('/categories/:category', function(req, res, next) {
   Category.findOne({where: {type_name: req.params.category}})
   .then(function(category) {
@@ -59,6 +61,15 @@ router.get('/categories/:category', function(req, res, next) {
   })
   .then(function(products) {
     res.status(200).send(products);
+  })
+  .catch(next);
+});
+
+//returns all category types
+router.get('/allcategories', function(req, res, next) {
+  Category.findAll()
+  .then(function(categories) {
+    res.status(200).send(categories);
   })
   .catch(next);
 });
