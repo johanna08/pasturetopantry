@@ -1,4 +1,4 @@
-<div ng-controller="AdminCtrl" class="addProduct">
+<div class="addProduct">
   <form name="addProductForm">
     <fieldset>
       <div class="form-group">
@@ -26,7 +26,7 @@
         <label for="categories">Product Categories</label>
         <div class="col-xs-10">
           <form name="categoryForm">
-            <!-- <input ng-repeat="category of categories" type="checkbox" name="category" value="{{category.type_name}}">{{category.type_name}}<br> -->
+              <label ng-repeat="category in categories"><input type="checkbox" name="category" ng-model="categorySelection[category.type_name]">{{category.type_name}}</label>
           </form>
         </div>
       </div>
