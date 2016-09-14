@@ -17,8 +17,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  Products.create(req.body)
+  Products.create(req.body.product)
   .then(function(product) {
+    product.setCategories(req.body.categories);
     res.status(200).send(product);
   })
   .catch(next);
