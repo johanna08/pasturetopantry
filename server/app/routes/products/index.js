@@ -11,7 +11,7 @@ module.exports = router;
 router.get('/', function(req,res,next){
   Products.findAll()
   .then(function(response){
-    res.send(response);
+    res.status(200).send(response);
   })
   .catch(next);
 });
