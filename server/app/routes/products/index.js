@@ -8,7 +8,6 @@ var chalk = require('chalk');
 
 module.exports = router;
 
-
 router.get('/', function(req, res, next) {
   Products.findAll({})
   .then(function(products) {
