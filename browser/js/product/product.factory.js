@@ -3,7 +3,7 @@
 app.factory('ProductFactory', function($http) {
   return {
     getProduct: function(id) {
-      return $http.get('/api/products/' + id)
+      return $http.get('/api/products/item/' + id)
       .then(function (response) {
         return response.data;
       });
