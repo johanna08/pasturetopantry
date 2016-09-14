@@ -1,9 +1,23 @@
+$headingsfont: 'Libre Baskerville', serif;
+$bodyfont: 'Open Sans', sans-serif;
+
 * {
   box-sizing: border-box;
 }
 
 body {
   background: #fdfdfd;
+  font-family: $bodyfont;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headingsfont;
+}
+
+a:hover {
+    text-decoration: none;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 @mixin clearfix {
@@ -15,7 +29,7 @@ body {
 }
 
 #main {
-  padding-top: 60px;
+  padding: 60px;
   margin: 0 auto;
 }
 
@@ -24,3 +38,4 @@ body {
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+@import 'singleItem/main';

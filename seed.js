@@ -54,7 +54,7 @@ var seedProducts = function () {
             quantity: 5,
             source: "Jo's Farm",
             description: 'Wild blueberries',
-            imageUrl: 'http://pngimg.com/upload/banana_PNG835.png'
+            imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg'
         },
         {
             name: 'bananas',
@@ -62,7 +62,7 @@ var seedProducts = function () {
             quantity: 1,
             source: "Jo's Farm",
             description: 'free-trade bananas',
-            imageUrl: 'http://2vg3dte874793qqzcf8j9mn.wpengine.netdna-cdn.com/wp-content/uploads/handful-of-blueberries-1502-498x286.jpg'
+            imageUrl: 'http://pngimg.com/upload/banana_PNG835.png'
         },
         {
             name: 'eggs',
