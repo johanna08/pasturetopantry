@@ -3,9 +3,10 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Orders = db.model('order');
 const Items = db.model('item');
+const Promise = require('sequelize').Promise;
 
 router.param('userId', function(req, res, next, userId) {
-  Orders.findOne({
+  Orders.findOrCreate({
     where: {
       userId: req.params.userId,
       status: 'Active'
@@ -15,34 +16,18 @@ router.param('userId', function(req, res, next, userId) {
        include: [Products]
     }]
   })
-  .then(function(order){
-    req.order = order;
-    next();
+  .spread(function(order){
+      req.order = order;
+      next();
   })
   .catch(next);
 });
 
-//get all active orders
+//get the active order for a given user
 router.get('/:userId', function(req, res, next){
-  //filter by active
   res.status(200).send(req.order);
-
-  // Orders.findOne({
-  //   where: {
-  //     userId: req.params.userId,
-  //     status: 'Active'
-  //   },
-  //   include: [{
-  //      model: Items,
-  //      include: [Products]
-  //   }]
-  // })
-  // .then(function(order){
-  //   res.send(order);
-  // })
-  // .catch(next);
-
 });
+
 // example response:
 // {
 //   "id": 1,
@@ -92,15 +77,69 @@ router.get('/:userId', function(req, res, next){
 //   ]
 // }
 
+//merges current cart items with those in the db
 router.put('/:userId/merge', function(req, res, next){
-  const items = req.body;
-  // for (let item of items){
-  //   Orders.findOne( where: {
-  //     userId: req.params.userId,
-  //     status: 'Active'
-  //   });
-  // }
+  const updates = req.body.updates;
+    var updatePromises = updates.map(function(update){
+      Items.findOne({
+        where : {
+          productId: update.productId,
+          orderId: req.order.id
+        }
+      })
+      .then(function(item){
+        if (item){
+          return item.update({ quantity: update.quantity});
+        } else {
+          return Items.create({ quantity: update.quantity})
+          .then(function(created){
+            return created.setOrder(req.order.id);
+          })
+          .then(function(created){
+            return created.setProduct(update.productId);
+          });
+        }
+      });
+    });
+
+    Promise.all(updatePromises)
+    .then(function(){
+      res.status(200).send('updated');
+    }).catch(next);
+});
+
+//checkout
+router.put('/:userId/checkout', function(req, res, next){
+  //array of items in cart -->can access each productId of item
+  //do a request to find all items in an order, include Products-->use this to access product instances
+  let products = req.order.items;
 
 });
+
+//remove all items from a cart
+router.delete('/:userId', function(req, res, next){
+  Items.destroy({
+    where: {
+      orderId: req.order.id
+    }
+  })
+  .then(function(){
+    res.status(204).send("Cart emptied");
+  });
+});
+
+//removes a specific item from an order
+router.delete('/:userId/product/:productId', function(req, res, next){
+  Items.destroy({
+    where : {
+      productId: req.params.productId,
+      orderId: req.order.id
+    }
+  })
+  .then(function(){
+    res.status(204).send("Item deleted");
+  })
+});
+
 
 module.exports = router;
