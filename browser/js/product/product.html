@@ -11,11 +11,9 @@
         <div class="pricecard">
             <h4>Price: {{product.price | currency }}</h4>
             <p>Ships from and sold by {{ product.source }}</p>
-
-            <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
+            <p>Qty:</p>
+            <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)"></select>
+            <button class="btn btn-success" type="submit" ng-click="addToCart(product.id, quantity)"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
         </div>
     </div>
 </div>
-
-
-

@@ -7,6 +7,12 @@ app.factory('ProductFactory', function($http) {
       .then(function (response) {
         return response.data;
       });
+    },
+    addToCart: function(id, quantity) {
+      return $http.get('/api/products/item/' + id)
+      .then(function (response) {
+        return response.data;
+      })
     }
   }
 });
