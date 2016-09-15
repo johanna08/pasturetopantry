@@ -3,9 +3,8 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Orders = db.model('order');
 const Items = db.model('item');
-//get all active orders
-router.get('/:userId', function(req, res, next){
-  //filter by active
+
+router.param('userId', function(req, res, next, userId) {
   Orders.findOne({
     where: {
       userId: req.params.userId,
@@ -17,9 +16,31 @@ router.get('/:userId', function(req, res, next){
     }]
   })
   .then(function(order){
-    res.send(order);
+    req.order = order;
+    next();
   })
   .catch(next);
+});
+
+//get all active orders
+router.get('/:userId', function(req, res, next){
+  //filter by active
+  res.status(200).send(req.order);
+
+  // Orders.findOne({
+  //   where: {
+  //     userId: req.params.userId,
+  //     status: 'Active'
+  //   },
+  //   include: [{
+  //      model: Items,
+  //      include: [Products]
+  //   }]
+  // })
+  // .then(function(order){
+  //   res.send(order);
+  // })
+  // .catch(next);
 
 });
 // example response:
@@ -73,12 +94,12 @@ router.get('/:userId', function(req, res, next){
 
 router.put('/:userId/merge', function(req, res, next){
   const items = req.body;
-  for (let item of items){
-    Orders.findOne( where: {
-      userId: req.params.userId,
-      status: 'Active'
-    });
-  }
+  // for (let item of items){
+  //   Orders.findOne( where: {
+  //     userId: req.params.userId,
+  //     status: 'Active'
+  //   });
+  // }
 
 });
 

@@ -64,7 +64,7 @@ describe('Products Route', function () {
             type_name: 'fruit'
         };
 
-            return Categories.bulkCreate([cat1, cat2, cat3]).then(function (products) {
+            return Categories.bulkCreate([cat1, cat2, cat3]).then(function (categories) {
                 done();
             }).catch(done);
         });
@@ -129,6 +129,46 @@ describe('Products Route', function () {
             });
         });
 
+    });
+
+    describe('Creating a new product with selected categories creates the appropriate associations', function () {
+
+        var guestAgent;
+
+        beforeEach('Create guest agent', function () {
+            guestAgent = supertest.agent(app);
+        });
+
+        var newProduct = {
+            product: {
+                name: 'Liverwurst',
+                price: 5,
+                description: 'delish',
+                quantity: 1,
+                source: "Jo's Farm"
+            },
+            categories: [1]
+        };
+
+        it('should get with 200 response and with an object as the body', function (done) {
+            guestAgent.post('/api/products/')
+            .send(newProduct)
+            .expect(200).end(function (err, response) {
+                if (err) return done(err);
+                expect(response.body).to.be.an('object');
+                expect(response.body.name).to.be.equal('Liverwurst');
+                done();
+            });
+        });
+
+        it('the product should be associated with its corresponding category', function (done) {
+            guestAgent.get('/api/products/categories/1').expect(200).end(function (err, response) {
+                    if (err) return done(err);
+                    console.log(response.body)
+                    // expect(response.body).to.be.include('Liverwurst');
+                    done();
+            });
+        });
     });
 
 });
