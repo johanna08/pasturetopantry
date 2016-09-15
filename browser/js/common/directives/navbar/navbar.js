@@ -39,16 +39,24 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state, $
             scope.products = []; //need to loop and display as rows
 
             scope.getCart = function() {
-                // console.log("hello!!");
                 for (var i = 0; i < $sessionStorage.cart.length; i++) {
                     ProductFactory.getProduct($sessionStorage.cart[i].id)
                         .then(function(product) {
-                            scope.products.push(product);
+                            for (var i = 0; i < scope.products.length; i++) {
+                                if (scope.products[i].id === product.id) {
+                                    var inCart = true;
+                                }
+                            }
+                            if (!inCart) {
+                                scope.products.push(product);
+                            }
                         });
                 }
-                // console.log(scope.products);
+
+
                 $rootScope.$emit('cartClick', scope.products);
             }
+
 
             setUser();
 

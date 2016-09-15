@@ -1,32 +1,32 @@
 'use strict';
 
 app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product) {
-  $scope.product = product;
+    $scope.product = product;
 
-  $scope.Range = function(start, end) {
-    var result = [];
-    for (var i = start; i <= end; i++) {
-        result.push(i);
-    }
-    return result;
-};
+    $scope.Range = function(start, end) {
+        var result = [];
+        for (var i = start; i <= end; i++) {
+            result.push(i);
+        }
+        return result;
+    };
 
-  if (!$sessionStorage.cart) {
-    $sessionStorage.cart = [];
-  }
-
-  $scope.addToCart = function(id, quantity) {
-    for (var i = 0; i < $sessionStorage.cart.length; i++) {
-      if ($sessionStorage.cart[i].id === id) {
-        var inCart = true;
-        $sessionStorage.cart[i].quantity += quantity;
-      }
+    if (!$sessionStorage.cart) {
+        $sessionStorage.cart = [];
     }
 
-    if (!inCart) {
-      $sessionStorage.cart.push({id: id, quantity: quantity});
-    }
+    $scope.addToCart = function(id, quantity) {
+        for (var i = 0; i < $sessionStorage.cart.length; i++) {
+            if ($sessionStorage.cart[i].id === id) {
+                var inCart = true;
+                $sessionStorage.cart[i].quantity += quantity;
+            }
+        }
 
-    console.log($sessionStorage.cart);
-  };
+        if (!inCart) {
+            $sessionStorage.cart.push({ id: id, quantity: quantity });
+        }
+
+        console.log($sessionStorage.cart);
+    };
 });

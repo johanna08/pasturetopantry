@@ -2,10 +2,23 @@
 app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, $rootScope) {
 
     $rootScope.$on('cartClick', function(event, data) {
-        console.log("hello");
         $scope.products = data;
-        console.log('PRODUCTS',$scope.products[0].name);
+        console.log("PRODUCTS: ", $scope.products);
     });
+
+    $scope.Range = function(start, end) {
+        var result = [];
+        for (var i = start; i <= end; i++) {
+            result.push(i);
+        }
+        return result;
+    };
+
+    $scope.getQuantity = function(id){
+    for (var i = 0; i < $sessionStorage.cart.length; i++) {
+            if ($sessionStorage.cart[i].id === id) return $sessionStorage.cart[i].quantity;
+        }
+    }
 
 });
 
