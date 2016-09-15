@@ -9,6 +9,7 @@ var Products = require('./models/products');
 var Category = require('./models/product_category');
 var Review = require('./models/review');
 var Order = require('./models/order');
+var Item = require('./models/cart-item');
 
 // if we had more models, we could associate them in this file
 // e.g. User.hasMany(Reports)
@@ -16,11 +17,17 @@ var Order = require('./models/order');
 User.hasMany(Review);
 User.hasMany(Order);
 
-//join table
-Order.belongsToMany(Products, { through: 'productOfOrder' });
+// //join table
+// Order.belongsToMany(Products, { through: 'productOfOrder' });
 
 //join table: a product can have multiple product types
 Products.belongsToMany(Category, { through: 'productCategory'});
 Category.belongsToMany(Products, {through: 'productCategory'});
+
+//Join tables for item with order and product
+Item.belongsTo(Order);
+Order.hasMany(Item);
+Item.belongsTo(Products);
+
 
 Products.hasMany(Review);

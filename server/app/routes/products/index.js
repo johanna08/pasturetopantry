@@ -56,7 +56,6 @@ router.delete('/:productId', function(req, res, next) {
 
 //gets all products in a given category
 //we have a belongsToMany relationship between products/category --> generates a getProducts() getter method
-
 router.get('/categories/:categoryId', function(req, res, next) {
   Category.findOne({where: {id: req.params.categoryId}})
   .then(function(category) {
