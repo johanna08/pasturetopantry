@@ -1,6 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('products', {
-        url: '/',
+        url: '/products',
         templateUrl: 'js/products/products.html',
         controller: function($scope, Products){
             Products.fetchAll()
