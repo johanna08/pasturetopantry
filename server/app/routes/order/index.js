@@ -112,8 +112,25 @@ router.put('/:userId/merge', function(req, res, next){
 router.put('/:userId/checkout', function(req, res, next){
   //array of items in cart -->can access each productId of item
   //do a request to find all items in an order, include Products-->use this to access product instances
-  let products = req.order.items;
-
+  Items.findAll({ where: { orderId: req.order.id }, include: [Products]})
+  .then(function(orderItems) {
+    return orderItems.map(function(item){
+      return item.product.reduceQuantity(item.quantity);
+    });
+  })
+  .then(function(arrayOfPromises) {
+    return Promise.all(arrayOfPromises);
+  })
+  .then(function(){
+    return Orders.findById(req.order.id);
+  })
+  .then(function(order) {
+    return order.update({ status: 'Complete'});
+  })
+  .then(function() {
+    res.sendStatus(204);
+  })
+  .catch(next);
 });
 
 //remove all items from a cart

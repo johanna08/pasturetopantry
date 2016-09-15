@@ -22,7 +22,7 @@ module.exports = db.define('product', {
       type: Sequelize.STRING
     },
     quantity: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     source: {
@@ -30,7 +30,10 @@ module.exports = db.define('product', {
       allowNull: false
     }
 }, {
-  hooks: {
-    //before save, if no imageUrl, have a default imageUrl to set
+  instanceMethods: {
+    reduceQuantity: function(quantity) {
+      if(this.quantity - quantity < 0) throw new Error('Insufficient Inventory');
+      this.quantity -= quantity;
+    }
   }
 });
