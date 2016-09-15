@@ -22,6 +22,8 @@ var db = require('./server/db');
 var User = db.model('user');
 const Products = db.model('product');
 const Categories = db.model('category');
+const Orders = db.model('order');
+const Items = db.model('item');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -106,6 +108,53 @@ var seedCategories = function () {
 
 };
 
+
+var seedOrders = function () {
+
+    var orders = [
+        {
+            status: 'Active',
+        },
+        {
+            status: 'Active',
+        },
+        {
+            status: 'Complete',
+        }
+
+    ];
+
+    var creatingOrders = orders.map(function (orderObj) {
+        return Orders.create(orderObj);
+    });
+
+    return Promise.all(creatingOrders);
+
+};
+
+var seedItems = function () {
+
+    var items = [
+        {
+            quantity: 2,
+        },
+        {
+            quantity: 1,
+        },
+        {
+            quantity: 3,
+        }
+
+    ];
+
+    var creatingItems = items.map(function (itemObj) {
+        return Items.create(itemObj);
+    });
+
+    return Promise.all(creatingItems);
+
+};
+
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
@@ -117,6 +166,12 @@ db.sync({ force: true })
         return seedCategories();
     })
     .then(function(){
+        return seedOrders();
+    })
+    .then(function(){
+        return seedItems();
+    })
+    .then(function(){
         return Products.findAll();
     })
     .then(function(products){
@@ -124,6 +179,36 @@ db.sync({ force: true })
             if(eachProduct.name === 'eggs') return eachProduct.setCategories([2]);
             return  eachProduct.setCategories([1]);
         })
+    })
+    .then(function(promises){
+        return Promise.all(promises);
+    })
+    //
+    .then(function(){
+        return User.findAll();
+    })
+    .then(function(users){
+        return users.map(function(user){
+            if(user.id == 1) return user.setOrders([1]);
+            return  user.setOrders([2,3]);
+        })
+    })
+    .then(function(promises){
+        return Promise.all(promises);
+    })
+    .then(function(){
+        return Items.findAll();
+    })
+    .then(function(items){
+        return items.map(function(item){
+            if(item.id == 1) {
+                return Promise.all([item.setOrder(1), item.setProduct(2)]);
+            }
+            if(item.id == 2) {
+                return Promise.all([item.setOrder(2), item.setProduct(3)]);
+            }
+            return  Promise.all([item.setOrder(3), item.setProduct(1)]);
+        });
     })
     .then(function(promises){
         return Promise.all(promises);

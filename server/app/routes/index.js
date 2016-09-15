@@ -7,6 +7,7 @@ router.use('/products', require('./products'));
 router.use('/signup', require('./signup'));
 router.use('/login', require('./login'));
 router.use('/logout', require('./logout'));
+router.use('/order', require('./order'));
 // Make sure this is after all of
 // the registered routes!
 router.use(function (req, res) {
