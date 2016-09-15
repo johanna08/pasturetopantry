@@ -205,7 +205,7 @@ db.sync({ force: true })
                 return Promise.all([item.setOrder(1), item.setProduct(2)]);
             }
             if(item.id == 2) {
-                return Promise.all([item.setOrder(2), item.setProduct(3)]);
+                return Promise.all([item.setOrder(1), item.setProduct(3)]);
             }
             return  Promise.all([item.setOrder(3), item.setProduct(1)]);
         });
