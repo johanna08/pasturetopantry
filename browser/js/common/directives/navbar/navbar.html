@@ -9,9 +9,7 @@
            </li>
        </ul>
        <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
-       <!-- <div ng-controller='CartCtrl'> -->
-       <button class="btn login-button" ui-sref="cart" ng-click="getCart()">Cart</button>
-       <!-- </div> -->
+       <button class="btn login-button" ui-sref="cart">Cart</button>
        <div ng-show="user" class="welcome">
            <span>Welcome, {{ user.email }}!</span>
            <a ng-click="logout()">Logout</a>

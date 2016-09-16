@@ -1,10 +1,7 @@
  'use strict';
-app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, $rootScope) {
+app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products) {
 
-    $rootScope.$on('cartClick', function(event, data) {
-        $scope.products = data;
-        console.log("PRODUCTS: ", $scope.products);
-    });
+    $scope.products = products;
 
     $scope.Range = function(start, end) {
         var result = [];
@@ -23,10 +20,32 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, $ro
 });
 
 
-app.config(function ($stateProvider) {
+app.config(function($stateProvider) {
     $stateProvider.state('cart', {
         url: '/cart',
         templateUrl: 'js/cart/cart.html',
-        controller: 'CartCtrl'
-        });
+        controller: 'CartCtrl',
+        resolve: {
+            products: function($sessionStorage, ProductFactory) {
+                let products = [];
+                if ($sessionStorage.cart) {
+                    for (var i = 0; i < $sessionStorage.cart.length; i++) {
+                        ProductFactory.getProduct($sessionStorage.cart[i].id)
+                            .then(function(product) {
+                                for (var i = 0; i < products.length; i++) {
+                                    if (products[i].id === product.id) {
+                                        var inCart = true;
+                                    }
+                                }
+                                if (!inCart) {
+                                    products.push(product);
+                                }
+                            });
+                    }
+                }
+                return products;
+            }
+        }
+    });
 });
+
