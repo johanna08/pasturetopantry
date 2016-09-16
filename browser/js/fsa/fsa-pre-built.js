@@ -48,13 +48,34 @@
         ]);
     });
 
-    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q) {
+    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, $sessionStorage, CartFactory) {
 
         function onSuccessfulLogin(response) {
             var user = response.data;
             Session.create(user);
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            return user;
+
+            //merge items into the cart
+            if (!$sessionStorage.cart) $sessionStorage.cart = [];
+
+            if ($sessionStorage.cart.length){
+                 console.log('SESSIONSTORAGECART', $sessionStorage.cart);
+                 CartFactory.mergeMyCart(user.id, {updates: $sessionStorage.cart})
+                 .then(function(newCart){
+                    console.log('NEWCART', newCart);
+                    return CartFactory.fetchMyCart(user.id);
+                 })
+                 .then(function(result){
+                    $sessionStorage.cart = result.items;
+                      return user;
+                 });
+            } else {
+                CartFactory.fetchMyCart(user.id)
+                .then(function(result){
+                    $sessionStorage.cart = result.items;
+                    return user;
+                 });
+            }
         }
 
         // Uses the session factory to see if an
@@ -85,6 +106,20 @@
             });
 
         };
+
+        this.safelyGetLoggedInUser = function(){
+            console.log('RESPONSE: ');
+            return $http.get('/session')
+            .then(function(response){
+               var user = response.data;
+               console.log('IN THE THEN', response.data);
+               return user;
+            })
+            .catch(function () {
+                console.log('IN THE CATCH');
+                return null;
+            });
+        }
 
         this.signup = function(credentials) {
             return $http.post('/api/signup', credentials)

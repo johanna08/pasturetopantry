@@ -1,5 +1,5 @@
  'use strict';
-app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products) {
+app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products, CartFactory, $rootScope, AuthService, $log) {
 
     $scope.products = products;
 
@@ -31,7 +31,7 @@ app.config(function($stateProvider) {
                     for (var i = 0; i < $sessionStorage.cart.length; i++) {
                         ProductFactory.getProduct($sessionStorage.cart[i].id)
                             .then(function(product) {
-                                //refactor
+                                //THIS IS THE PROBLEM??????????????????
                                 for (var i = 0; i < products.length; i++) {
                                     if (products[i].id === product.id) {
                                         var inCart = true;
@@ -43,6 +43,7 @@ app.config(function($stateProvider) {
                             });
                     }
                 }
+                console.log("FOR J", products);
                 return products;
             }
         }

@@ -125,6 +125,7 @@ router.get('/:userId', function(req, res, next){
 //merges current cart items with those in the db
 router.put('/:userId/merge', function(req, res, next){
   const updates = req.body.updates;
+  // Console.log('HEEEEEEEEEEEEERE');
     var updatePromises = updates.map(function(update){
       Items.findOne({
         where : {

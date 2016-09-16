@@ -13,7 +13,8 @@ app.factory('CartFactory', function($http, $log){
     //merge items in users cart with db cart
     //updates sould be an array
       mergeMyCart: function(userId, updates){
-        return $http.put('/api/order/' + userId + '/merge', {updates})
+        console.log('FROM FACTORY', updates);
+        return $http.put('/api/order/' + userId + '/merge', updates)
         .then(sendResponse)
         .catch($log.error)
       },

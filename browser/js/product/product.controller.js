@@ -24,6 +24,7 @@ app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionSto
         }
 
         if (!inCart) {
+            console.log('FROM CONTROLLER', $sessionStorage.cart);
             $sessionStorage.cart.push({ id: id, quantity: quantity });
         }
 
