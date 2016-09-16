@@ -16,7 +16,6 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
             if ($sessionStorage.cart[i].id === id) return $sessionStorage.cart[i].quantity;
         }
     }
-
 });
 
 
@@ -32,6 +31,7 @@ app.config(function($stateProvider) {
                     for (var i = 0; i < $sessionStorage.cart.length; i++) {
                         ProductFactory.getProduct($sessionStorage.cart[i].id)
                             .then(function(product) {
+                                //refactor
                                 for (var i = 0; i < products.length; i++) {
                                     if (products[i].id === product.id) {
                                         var inCart = true;
