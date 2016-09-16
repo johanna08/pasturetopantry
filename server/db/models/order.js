@@ -7,7 +7,7 @@ var db = require('../_db');
 
 module.exports = db.define('order', {
     status: {
-      type: Sequelize.ENUM('In-Process', 'Complete')
+      type: Sequelize.ENUM('Active', 'Complete')
     }
 }, {
   hooks: {
