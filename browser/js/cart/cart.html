@@ -8,13 +8,13 @@
    </thead>
    <tbody>
        <tr ng-repeat="product in products">
-
-           <td class="col-xs-4"><img class="thumbnail" ng-src="{{ product.imageUrl }}" /> {{ product.name }} {{ product.description}}</td>
-           <td class="col-xs-4">{{ product.price | currency }}</td>
-           <td class="col-xs-4">
+           <td><img src="{{ product.imageUrl }}" /> {{ product.name }} {{ product.description}}</td>
+           <td>{{ product.price | currency }}</td>
+           <td>
            <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)" ng-init="quantity=getQuantity(product.id)"></select>
            </td>
 
        </tr>
    </tbody>
 </table>
+<button class="btn btn-success" ui-sref="">Checkout</button>

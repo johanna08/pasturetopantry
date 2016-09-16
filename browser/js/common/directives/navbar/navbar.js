@@ -1,4 +1,4 @@
-app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state, $sessionStorage, ProductFactory) {
+app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state) {
 
     return {
         restrict: 'E',
@@ -35,28 +35,6 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state, $
             var removeUser = function() {
                 scope.user = null;
             };
-
-            scope.products = []; //need to loop and display as rows
-
-            scope.getCart = function() {
-                for (var i = 0; i < $sessionStorage.cart.length; i++) {
-                    ProductFactory.getProduct($sessionStorage.cart[i].id)
-                        .then(function(product) {
-                            for (var i = 0; i < scope.products.length; i++) {
-                                if (scope.products[i].id === product.id) {
-                                    var inCart = true;
-                                }
-                            }
-                            if (!inCart) {
-                                scope.products.push(product);
-                            }
-                        });
-                }
-
-
-                $rootScope.$emit('cartClick', scope.products);
-            }
-
 
             setUser();
 
