@@ -5,6 +5,50 @@ const Orders = db.model('order');
 const Items = db.model('item');
 const Promise = require('sequelize').Promise;
 
+//checkout for non-users
+//req.body.products is an array of objects {products: [{productId, quantity}]}
+router.post('/checkout', function(req, res, next){
+
+  //create a complete order with no user attached
+  Orders.create({status: 'Complete'})
+  .then(function(order){
+    return req.body.products.map(function(product){
+       //create associations for order and product
+       return Items.create({quantity: product.quantity})
+       .then(function(item){
+          return item.setProduct(product.productId);
+       })
+       .then(function(item){
+          return item.setOrder(order.id);
+       })
+       //reduce quantity for each product in req.body
+       .then(function(item){
+          return item.reduceProductQuantity(product.quantity)
+          .catch(function(err){
+            err.flag = "insufficient";
+            err.order = order;
+            throw err;
+          });
+       });
+    });
+  })
+  .then(function(promises){
+    return Promise.all(promises);
+  })
+  .then(function(){
+    res.sendStatus(201);
+  })
+  .catch(function(err){
+    if (err.flag === "insufficient"){
+      return err.order.update({status: 'Failed'})
+      .then(function(){
+        res.sendStatus(403);
+      });
+    } else next(err);
+  })
+});
+
+
 router.param('userId', function(req, res, next, userId) {
   Orders.findOrCreate({
     where: {
@@ -22,6 +66,7 @@ router.param('userId', function(req, res, next, userId) {
   })
   .catch(next);
 });
+
 
 //get the active order for a given user
 router.get('/:userId', function(req, res, next){
@@ -108,7 +153,7 @@ router.put('/:userId/merge', function(req, res, next){
     }).catch(next);
 });
 
-//checkout
+//checkout for users
 router.put('/:userId/checkout', function(req, res, next){
   //array of items in cart -->can access each productId of item
   //do a request to find all items in an order, include Products-->use this to access product instances
