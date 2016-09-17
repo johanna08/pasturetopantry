@@ -1,6 +1,4 @@
 'use strict';
-var crypto = require('crypto');
-var _ = require('lodash');
 var Sequelize = require('sequelize');
 
 var db = require('../_db');
@@ -32,7 +30,7 @@ module.exports = db.define('product', {
 }, {
   instanceMethods: {
     reduceQuantity: function(quantity) {
-      if(this.quantity - quantity < 0) throw new Error('Insufficient Inventory');
+      if (this.quantity - quantity < 0) throw new Error('Insufficient Inventory');
       this.quantity -= quantity;
     }
   }

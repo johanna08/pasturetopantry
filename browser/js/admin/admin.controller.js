@@ -7,13 +7,13 @@ app.controller('AdminCtrl', function($scope, $state, AdminFactory, Products, cat
 
   $scope.addProduct = function(product) {
     let selectedCategories = Object.keys($scope.categorySelection);
-    let categories = $scope.categories.reduce(function(arr, obj) {
+    let prodCategories = $scope.categories.reduce(function(arr, obj) {
       if (selectedCategories.includes(obj.type_name)) arr.push(obj.id);
       return arr;
     }, []);
-    AdminFactory.addProduct({product:product, categories: categories})
-    .then(function(product) {
-      $state.go('product', { id: product.id });
+    AdminFactory.addProduct({product: product, categories: prodCategories})
+    .then(function(addedProduct) {
+      $state.go('product', { id: addedProduct.id });
     })
     .catch($log.error);
   }

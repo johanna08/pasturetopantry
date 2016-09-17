@@ -2,7 +2,7 @@
 const path = require('path');
 const express = require('express');
 const app = express();
-const session = require("express-session");
+const session = require('express-session');
 
 module.exports = function (db) {
 
@@ -11,9 +11,9 @@ module.exports = function (db) {
     require('./configure')(app, db);
 
     // initiate a session
-    app.use(session({secret: "PLACEHOLDER"}));
-    app.get('/session', function(req,res,next){
-        if(req.session.user){
+    app.use(session({secret: 'PLACEHOLDER'}));
+    app.get('/session', function(req, res, next){
+        if (req.session.user){
             res.send(req.session.user);
         }
         res.sendStatus(401);

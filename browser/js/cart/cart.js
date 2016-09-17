@@ -42,8 +42,8 @@ app.config(function($stateProvider) {
                     for (var i = 0; i < $sessionStorage.cart.length; i++) {
                         ProductFactory.getProduct($sessionStorage.cart[i].id)
                             .then(function(product) {
-                                for (var i = 0; i < products.length; i++) {
-                                    if (products[i].id === product.id) {
+                                for (var i2 = 0; i2 < products.length; i2++) {
+                                    if (products[i2].id === product.id) {
                                         var inCart = true;
                                     }
                                 }

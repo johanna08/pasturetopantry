@@ -4,10 +4,10 @@ const User = db.model('user');
 
 router.post('/', function(req, res, next){
   const sess = req.session;
-  User.findOne({where : {email : req.body.email}})
+  User.findOne({where: {email: req.body.email}})
   .then(function(result){
     if (result) {
-       res.send("An account already exists with this email");
+       res.send('An account already exists with this email');
     }
     return User.create(req.body);
   })

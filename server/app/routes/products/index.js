@@ -4,7 +4,6 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Category = db.model('category');
 const Review = db.model('review');
-var chalk = require('chalk');
 
 module.exports = router;
 
@@ -48,7 +47,7 @@ router.put('/:productId', function(req, res, next) {
 
 router.delete('/:productId', function(req, res, next) {
   Products.destroy( {where: {id: req.params.productId}})
-  .then(function(product) {
+  .then(function() {
     res.status(204).send();
   })
   .catch(next);

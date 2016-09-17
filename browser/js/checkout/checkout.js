@@ -12,13 +12,13 @@ app.config(function($stateProvider) {
                             .then(function(product) {
 
 
-                                for (var i = 0; i < products.length; i++) {
-                                    if (products[i].id === product.id) {
+                                for (var i2 = 0; i2 < products.length; i2++) {
+                                    if (products[i2].id === product.id) {
                                         var inCart = true;
                                     }
                                 }
                                 if (!inCart) {
-                                    product.totalCost = $sessionStorage.cart[i].quantity * product.price;
+                                    product.totalCost = $sessionStorage.cart[i2].quantity * product.price;
                                     products.push(product);
                                 }
                             });

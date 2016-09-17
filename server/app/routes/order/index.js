@@ -25,7 +25,7 @@ router.post('/checkout', function(req, res, next){
        .then(function(item){
           return item.reduceProductQuantity(product.quantity)
           .catch(function(err){
-            err.flag = "insufficient";
+            err.flag = 'insufficient';
             err.order = order;
             throw err;
           });
@@ -39,12 +39,14 @@ router.post('/checkout', function(req, res, next){
     res.sendStatus(201);
   })
   .catch(function(err){
-    if (err.flag === "insufficient"){
+    if (err.flag === 'insufficient'){
       return err.order.update({status: 'Failed'})
       .then(function(){
         res.sendStatus(403);
       });
-    } else next(err);
+    } else {
+      next(err);
+    }
   })
 });
 
@@ -52,7 +54,7 @@ router.post('/checkout', function(req, res, next){
 router.param('userId', function(req, res, next, userId) {
   Orders.findOrCreate({
     where: {
-      userId: req.params.userId,
+      userId: userId,
       status: 'Active'
     },
     include: [{
@@ -127,7 +129,7 @@ router.put('/:userId/merge', function(req, res, next){
   const updates = req.body.updates;
     var updatePromises = updates.map(function(update){
       Items.findOne({
-        where : {
+        where: {
           productId: update.productId,
           orderId: req.order.id
         }
@@ -186,20 +188,20 @@ router.delete('/:userId', function(req, res, next){
     }
   })
   .then(function(){
-    res.status(204).send("Cart emptied");
+    res.status(204).send('Cart emptied');
   });
 });
 
 //removes a specific item from an order
 router.delete('/:userId/product/:productId', function(req, res, next){
   Items.destroy({
-    where : {
+    where: {
       productId: req.params.productId,
       orderId: req.order.id
     }
   })
   .then(function(){
-    res.status(204).send("Item deleted");
+    res.status(204).send('Item deleted');
   })
 });
 

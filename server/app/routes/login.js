@@ -7,15 +7,15 @@ router.post('/', function(req, res, next){
   User.findOne({where: {email: req.body.email}})
   .then(function(user){
     if (user) {
-      if(user.correctPassword(req.body.password)) {
+      if (user.correctPassword(req.body.password)) {
         //respond with username and id to avoid sending private info
         res.status(200).send({ email: user.email, id: user.id });
         sess.userId = user.id;
       } else {
-        res.status(401).send("Incorrect password.");
+        res.status(401).send('Incorrect password.');
       }
     } else {
-      res.status(401).send("User not found.");
+      res.status(401).send('User not found.');
     }
   })
   .catch(next);
