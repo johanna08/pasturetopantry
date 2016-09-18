@@ -5,7 +5,7 @@ app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionSto
 
     $scope.Range = function(start, end) {
         var result = [];
-        for (var i = start; i <= end; i++) {
+        for (let i = start; i <= end; i++) {
             result.push(i);
         }
         return result;
@@ -16,18 +16,12 @@ app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionSto
     }
 
     $scope.addToCart = function(id, quantity) {
-        for (var i = 0; i < $sessionStorage.cart.length; i++) {
-            if ($sessionStorage.cart[i].id === id) {
-                var inCart = true;
-                $sessionStorage.cart[i].quantity += quantity;
-            }
-        }
-
-        if (!inCart) {
-            console.log('FROM CONTROLLER', $sessionStorage.cart);
+        let items = $sessionStorage.cart.map(item => item.id);
+        let addedItemIdx = items.indexOf(id);
+        if (addedItemIdx !== -1) {
+            $sessionStorage.cart[addedItemIdx].quantity += quantity;
+        } else if (addedItemIdx === -1 || !$sessionStorage.cart.length){
             $sessionStorage.cart.push({ id: id, quantity: quantity });
         }
-
-        console.log($sessionStorage.cart);
     };
 });

@@ -49,7 +49,6 @@
     });
 
     app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, $sessionStorage, CartFactory) {
-
         function onSuccessfulLogin(response) {
             var user = response.data;
             Session.create(user);
@@ -57,22 +56,29 @@
 
             //merge items into the cart
             if (!$sessionStorage.cart) $sessionStorage.cart = [];
+            console.log('SESSIONSTORAGECART AT BEGINNING OF LOGIN PROCESS', $sessionStorage.cart);
 
             if ($sessionStorage.cart.length){
-                 console.log('SESSIONSTORAGECART', $sessionStorage.cart);
                  CartFactory.mergeMyCart(user.id, {updates: $sessionStorage.cart})
-                 .then(function(newCart){
-                    console.log('NEWCART', newCart);
+                 .then(function(){
+                    console.log('LOGIN INITIATED MERGE');
                     return CartFactory.fetchMyCart(user.id);
                  })
                  .then(function(result){
-                    $sessionStorage.cart = result.items;
+                    //we only need item quantity and productID on storagesessions
+                    //when we build the cart we fetch the product by id anyway
+                    $sessionStorage.cart = result.items.map(function(cartItem){ return {id: cartItem.productId, quantity: cartItem.quantity}});
+                    console.log('SESSIONSTORAGECART AT END OF LOGIN PROCESS', $sessionStorage.cart);
                       return user;
                  });
             } else {
                 CartFactory.fetchMyCart(user.id)
                 .then(function(result){
-                    $sessionStorage.cart = result.items;
+                    console.log('LOGIN INITIATED FETCH MY CART, NO MERGE');
+                    //we only need item quantity and productID on storagesessions
+                    //when we build the cart we fetch the product by id anyway
+                    $sessionStorage.cart = result.items.map(function(cartItem){ return {id: cartItem.productId, quantity: cartItem.quantity}});
+                        console.log('SESSIONSTORAGECART AT END OF LOGIN PROCESS', $sessionStorage.cart);
                     return user;
                  });
             }
@@ -108,15 +114,12 @@
         };
 
         this.safelyGetLoggedInUser = function(){
-            console.log('RESPONSE: ');
             return $http.get('/session')
             .then(function(response){
                var user = response.data;
-               console.log('IN THE THEN', response.data);
                return user;
             })
             .catch(function () {
-                console.log('IN THE CATCH');
                 return null;
             });
         }
@@ -142,6 +145,7 @@
 
         this.logout = function () {
             return $http.post('/api/logout').then(function () {
+                $sessionStorage.cart = [];
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
             });

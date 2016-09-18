@@ -1,4 +1,4 @@
-app.factory('CartFactory', function($http, $log){
+app.factory('CartFactory', function($http, $log, $sessionStorage, ProductFactory){
   function sendResponse(response){
     return response.data;
   }
@@ -13,7 +13,7 @@ app.factory('CartFactory', function($http, $log){
     //merge items in users cart with db cart
     //updates sould be an array
       mergeMyCart: function(userId, updates){
-        console.log('FROM FACTORY', updates);
+        console.log('UPDATES PASSED TO MERGEMYCART IN CART FACTORY: ', updates);
         return $http.put('/api/order/' + userId + '/merge', updates)
         .then(sendResponse)
         .catch($log.error)
@@ -38,11 +38,10 @@ app.factory('CartFactory', function($http, $log){
       },
     //checkout as a non-user
     //products should be an aray of objects {products: [{productId, quantity}]}
-      nonUserCheckout(products){
+      nonUserCheckout: function(products){
         return $http.post('api/order/checkout', {products})
         .then(sendResponse)
         .catch($log.error);
       }
-
   }
 });

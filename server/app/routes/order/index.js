@@ -8,7 +8,6 @@ const Promise = require('sequelize').Promise;
 //checkout for non-users
 //req.body.products is an array of objects {products: [{productId, quantity}]}
 router.post('/checkout', function(req, res, next){
-
   //create a complete order with no user attached
   Orders.create({status: 'Complete'})
   .then(function(order){
@@ -38,6 +37,8 @@ router.post('/checkout', function(req, res, next){
   .then(function(){
     res.sendStatus(201);
   })
+  //if we don't have enough quantity of product in DB, the order is marked as failed
+  //and we throw an error
   .catch(function(err){
     if (err.flag === "insufficient"){
       return err.order.update({status: 'Failed'})
@@ -125,11 +126,10 @@ router.get('/:userId', function(req, res, next){
 //merges current cart items with those in the db
 router.put('/:userId/merge', function(req, res, next){
   const updates = req.body.updates;
-  // Console.log('HEEEEEEEEEEEEERE');
     var updatePromises = updates.map(function(update){
       Items.findOne({
         where : {
-          productId: update.productId,
+          productId: update.id,
           orderId: req.order.id
         }
       })
@@ -142,7 +142,7 @@ router.put('/:userId/merge', function(req, res, next){
             return created.setOrder(req.order.id);
           })
           .then(function(created){
-            return created.setProduct(update.productId);
+            return created.setProduct(update.id);
           });
         }
       });
