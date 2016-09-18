@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product) {
+app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product, Session) {
     $scope.product = product;
 
     $scope.Range = function(start, end) {
@@ -12,7 +12,7 @@ app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionSto
     };
 
     if (!$sessionStorage.cart) {
-        $sessionStorage.cart = [];
+        Session.resetSessionCart();
     }
 
     $scope.addToCart = function(id, quantity) {

@@ -1,7 +1,8 @@
  'use strict';
-app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products, CartFactory, $rootScope, AuthService, $log) {
+app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products, Session, CartFactory, $state) {
 
     $scope.products = products;
+    var sessionUser = CartFactory.getSessionUser();
 
     $scope.Range = function(start, end) {
         var result = [];
@@ -12,9 +13,26 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     };
 
     $scope.getQuantity = function(id){
-    for (let i = 0; i < $sessionStorage.cart.length; i++) {
-            if ($sessionStorage.cart[i].id === id) return $sessionStorage.cart[i].quantity;
+    for (let item of $sessionStorage.cart) {
+            if (item.id === id) return item.quantity;
         }
+    }
+
+    $scope.clearCart = function() {
+        Session.resetSessionCart();
+
+        if (sessionUser) CartFactory.deleteAll(sessionUser)
+        //I set this up in fsa file in Session service, just resets cart to empty array
+    }
+
+    $scope.deleteOne = function(productId) {
+        let ItemIdxInSession = $sessionStorage.cart.map(items => items.id).indexOf(productId)
+        $sessionStorage.cart.splice(ItemIdxInSession, 1);
+
+        if (sessionUser) CartFactory.deleteOne(sessionUser, productId)
+        .then(function(){
+            $state.go('cart');
+        })
     }
 });
 
@@ -27,9 +45,7 @@ app.config(function($stateProvider) {
         resolve: {
             products: function($sessionStorage, ProductFactory) {
                 let products = [];
-                //sets up an array of promises that gets each item's product info on $sessionStorage.cart from db
-                //then we add each item to products array, which will be accessed on the scope to build cart
-                //
+                //an array of promises that both gets a product from the db and pushes it to products array
                 let sessionCartProducts = $sessionStorage.cart.map(function(cartItem) {
                     return ProductFactory.getProduct(cartItem.id)
                     .then(function(product){
@@ -37,31 +53,10 @@ app.config(function($stateProvider) {
                         if (!productsIds.includes(product.id)) products.push(product);
                     });
                 });
-
+                //make sure the above promises are all resolved before returning the products array
+                //avoids returning products before everything inside sessionCartProducts has been completed asynchcroniously (spelled wrong)
                 Promise.all(sessionCartProducts);
                 return products;
-
-                // let products = [];
-                // if ($sessionStorage.cart) {
-                //     console.log('what is this session storage before cart resolve: ', $sessionStorage.cart);
-                //     for (let item of $sessionStorage.cart) {
-                //         ProductFactory.getProduct(item.id)
-                //             .then(function(product) {
-                //                 for (let addedItem of products) {
-                //                     if (addedItem.id === product.id) {
-                //                         var inCart = true;
-                //                     }
-                //                     var inCart = false;
-                //                 }
-                //                 if (!inCart) {
-                //                     products.push(product);
-                //                 }
-                //             });
-                //     }
-                // }
-                // console.log('after resolve, what is products?', products);
-                // console.log('after resolve, what is session storage: ', $sessionStorage.cart);
-                // return products;
             }
         }
     });

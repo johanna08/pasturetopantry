@@ -53,35 +53,7 @@
             var user = response.data;
             Session.create(user);
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-
-            //merge items into the cart
-            if (!$sessionStorage.cart) $sessionStorage.cart = [];
-            console.log('SESSIONSTORAGECART AT BEGINNING OF LOGIN PROCESS', $sessionStorage.cart);
-
-            if ($sessionStorage.cart.length){
-                 CartFactory.mergeMyCart(user.id, {updates: $sessionStorage.cart})
-                 .then(function(){
-                    console.log('LOGIN INITIATED MERGE');
-                    return CartFactory.fetchMyCart(user.id);
-                 })
-                 .then(function(result){
-                    //we only need item quantity and productID on storagesessions
-                    //when we build the cart we fetch the product by id anyway
-                    $sessionStorage.cart = result.items.map(function(cartItem){ return {id: cartItem.productId, quantity: cartItem.quantity}});
-                    console.log('SESSIONSTORAGECART AT END OF LOGIN PROCESS', $sessionStorage.cart);
-                      return user;
-                 });
-            } else {
-                CartFactory.fetchMyCart(user.id)
-                .then(function(result){
-                    console.log('LOGIN INITIATED FETCH MY CART, NO MERGE');
-                    //we only need item quantity and productID on storagesessions
-                    //when we build the cart we fetch the product by id anyway
-                    $sessionStorage.cart = result.items.map(function(cartItem){ return {id: cartItem.productId, quantity: cartItem.quantity}});
-                        console.log('SESSIONSTORAGECART AT END OF LOGIN PROCESS', $sessionStorage.cart);
-                    return user;
-                 });
-            }
+            CartFactory.syncSessionCartToDb();
         }
 
         // Uses the session factory to see if an
@@ -153,7 +125,7 @@
 
     });
 
-    app.service('Session', function ($rootScope, AUTH_EVENTS) {
+    app.service('Session', function ($rootScope, AUTH_EVENTS, $sessionStorage) {
 
         var self = this;
 
@@ -173,6 +145,10 @@
 
         this.destroy = function () {
             this.user = null;
+        };
+
+        this.resetSessionCart = function() {
+            $sessionStorage.cart = [];
         };
 
     });
