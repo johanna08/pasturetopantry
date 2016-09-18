@@ -16,24 +16,26 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     for (let item of $sessionStorage.cart) {
             if (item.id === id) return item.quantity;
         }
-    }
+    };
 
     $scope.clearCart = function() {
         Session.resetSessionCart();
 
         if (sessionUser) CartFactory.deleteAll(sessionUser)
         //I set this up in fsa file in Session service, just resets cart to empty array
-    }
+    };
 
     $scope.deleteOne = function(productId) {
         let ItemIdxInSession = $sessionStorage.cart.map(items => items.id).indexOf(productId)
         $sessionStorage.cart.splice(ItemIdxInSession, 1);
 
-        if (sessionUser) CartFactory.deleteOne(sessionUser, productId)
-        .then(function(){
-            $state.go('cart');
-        })
-    }
+        if (sessionUser) {
+            CartFactory.deleteOne(sessionUser, productId)
+            .then(function(){
+                $state.go('cart');
+            })
+        }
+    };
 });
 
 
