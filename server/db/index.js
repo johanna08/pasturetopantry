@@ -16,8 +16,9 @@ var Item = require('./models/cart-item');
 
 User.hasMany(Review);
 Review.belongsTo(User);
-User.hasMany(Order);
 
+User.hasMany(Order);
+Order.belongsTo(User)
 // //join table
 // Order.belongsToMany(Products, { through: 'productOfOrder' });
 

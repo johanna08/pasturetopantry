@@ -1,0 +1,24 @@
+<div>
+<span>
+    <input type="text" class="form-control" placeholder="search by user email" ng-model="userSearch"></input>
+    <select ng-model="statusSearch" ng-options="status for status in statusTypes">
+      <option value="">order status<option>
+    </select>
+</span>
+ <div class="row">
+   <div class="col-xs-3">
+    <h3>Order #</h3>
+    <a ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.id}} </br></a>
+   </div>
+   <div class="col-xs-3">
+   <h3>User</h3>
+      <a ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.user.email}}</br></a>
+   </div>
+   <div class="col-xs-3">
+      <h3>Order Total</h3>
+   </div>
+   <div class="col-xs-3">
+      <h3>Order Status</h3>
+      <p ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.status}}</br></p>
+   </div>
+</div>
