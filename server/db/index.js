@@ -27,6 +27,7 @@ Category.belongsToMany(Products, {through: 'productCategory'});
 //Join tables for item with order and product
 Item.belongsTo(Order);
 Order.hasMany(Item);
+
 Item.belongsTo(Products);
 
 

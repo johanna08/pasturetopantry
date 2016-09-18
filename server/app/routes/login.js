@@ -6,16 +6,14 @@ router.post('/', function(req, res, next){
   const sess = req.session;
   User.findOne({where: {email: req.body.email}})
   .then(function(user){
-    if (user) {
-      if(user.correctPassword(req.body.password)) {
-        //respond with username and id to avoid sending private info
-        res.status(200).send({ email: user.email, id: user.id });
-        sess.userId = user.id;
+    if (!user) {res.status(401).send('User not found.');}
+    else {
+      if(user.correctPassword(req.body.password)){
+      sess.userId = user.id;
+      res.status(200).send(user.sanitize());
       } else {
-        res.status(401).send("Incorrect password.");
+        res.status(401).send('Incorrect login credentials.');
       }
-    } else {
-      res.status(401).send("User not found.");
     }
   })
   .catch(next);
