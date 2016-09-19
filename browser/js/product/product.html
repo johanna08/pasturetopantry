@@ -18,6 +18,7 @@
     </div>
 </div>
 <h3>Reviews for {{ product.name }}:</h3>
+<p ng-show = "!product.reviews.length">There are currently no reviews for {{ product.name }}.</p>
 <div ng-repeat = "review in product.reviews">
     <review review = "review"></review>
 </div>
