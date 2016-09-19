@@ -9,7 +9,7 @@
     </div>
     <div class="col-xs-5">
         <div class="pricecard">
-            <h4>Price: {{product.price | currency }}</h4>
+            <h4>Price: {{product.dollarPrice | currency }}</h4>
             <p>Ships from and sold by {{ product.source }}</p>
             <p>Qty:</p>
             <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)" ng-init="quantity=1"></select>
@@ -17,3 +17,4 @@
         </div>
     </div>
 </div>
+<submit-review></submit-review>

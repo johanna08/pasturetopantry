@@ -16,8 +16,10 @@ var OrderDetail = require('./models/order-details');
 // e.g. User.hasMany(Reports)
 
 User.hasMany(Review);
-User.hasMany(Order);
+Review.belongsTo(User);
 
+User.hasMany(Order);
+Order.belongsTo(User)
 // //join table
 // Order.belongsToMany(Products, { through: 'productOfOrder' });
 
@@ -28,9 +30,11 @@ Category.belongsToMany(Products, {through: 'productCategory'});
 //Join tables for item with order and product
 Item.belongsTo(Order);
 Order.hasMany(Item);
+
 Item.belongsTo(Products);
 
 //join order details with cart details
 OrderDetail.belongsTo(Item);
 
 Products.hasMany(Review);
+Review.belongsTo(Products);
