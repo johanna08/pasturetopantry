@@ -24,6 +24,7 @@ const Products = db.model('product');
 const Categories = db.model('category');
 const Orders = db.model('order');
 const Items = db.model('item');
+const OrderDetail = db.model('orderDetails');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -155,6 +156,35 @@ var seedItems = function () {
 
 };
 
+var seedOrderDetails = function () {
+
+    var orderDetails = [
+        {
+            name: 'Non-User',
+            email: 'nonuser@gmail.com',
+            address: '123'
+        },
+        {
+            name: 'Obama',
+            email: 'obama@gmail.com',
+            address: 'WhiteHouse'
+        },
+        {
+            name: 'Non-User2',
+            email: 'nonuser2@gmail.com',
+            address: '123'
+        }
+
+    ];
+
+    var creatingOrderDetails = orderDetails.map(function (orderDetailObj) {
+        return OrderDetail.create(orderDetailObj);
+    });
+
+    return Promise.all(creatingOrderDetails);
+
+};
+
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
@@ -170,6 +200,9 @@ db.sync({ force: true })
     })
     .then(function(){
         return seedItems();
+    })
+    .then(function(){
+        return seedOrderDetails();
     })
     .then(function(){
         return Products.findAll();
