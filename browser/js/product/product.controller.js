@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product, Session) {
+app.controller('ProductCtrl', function($scope, ProductFactory, $log, product, Session, $sessionStorage) {
     $scope.product = product;
     $scope.userId = Session.user ? Session.user.id : null;
 
@@ -12,17 +12,10 @@ app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionSto
         return result;
     };
 
+    //move this logic to backwards
     if (!$sessionStorage.cart) {
         Session.resetSessionCart();
     }
 
-    $scope.addToCart = function(id, quantity) {
-        let items = $sessionStorage.cart.map(item => item.id);
-        let addedItemIdx = items.indexOf(id);
-        if (addedItemIdx !== -1) {
-            $sessionStorage.cart[addedItemIdx].quantity += quantity;
-        } else if (addedItemIdx === -1 || !$sessionStorage.cart.length){
-            $sessionStorage.cart.push({ id: id, quantity: quantity });
-        }
-    };
+    $scope.addToCart = ProductFactory.addToCart;
 });
