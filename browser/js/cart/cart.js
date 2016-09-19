@@ -1,21 +1,41 @@
  'use strict';
-app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products, CartFactory, $rootScope, AuthService, $log) {
+app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, products, Session, CartFactory, $state) {
 
     $scope.products = products;
+    var sessionUser = CartFactory.getSessionUser();
 
     $scope.Range = function(start, end) {
         var result = [];
-        for (var i = start; i <= end; i++) {
+        for (let i = start; i <= end; i++) {
             result.push(i);
         }
         return result;
     };
 
     $scope.getQuantity = function(id){
-    for (var i = 0; i < $sessionStorage.cart.length; i++) {
-            if ($sessionStorage.cart[i].id === id) return $sessionStorage.cart[i].quantity;
+    for (let item of $sessionStorage.cart) {
+            if (item.id === id) return item.quantity;
         }
-    }
+    };
+
+    $scope.clearCart = function() {
+        Session.resetSessionCart();
+
+        if (sessionUser) CartFactory.deleteAll(sessionUser)
+        //I set this up in fsa file in Session service, just resets cart to empty array
+    };
+
+    $scope.deleteOne = function(productId) {
+        let ItemIdxInSession = $sessionStorage.cart.map(items => items.id).indexOf(productId)
+        $sessionStorage.cart.splice(ItemIdxInSession, 1);
+
+        if (sessionUser) {
+            CartFactory.deleteOne(sessionUser, productId)
+            .then(function(){
+                $state.go('cart');
+            })
+        }
+    };
 });
 
 
@@ -27,23 +47,17 @@ app.config(function($stateProvider) {
         resolve: {
             products: function($sessionStorage, ProductFactory) {
                 let products = [];
-                if ($sessionStorage.cart) {
-                    for (var i = 0; i < $sessionStorage.cart.length; i++) {
-                        ProductFactory.getProduct($sessionStorage.cart[i].id)
-                            .then(function(product) {
-                                //THIS IS THE PROBLEM??????????????????
-                                for (var i = 0; i < products.length; i++) {
-                                    if (products[i].id === product.id) {
-                                        var inCart = true;
-                                    }
-                                }
-                                if (!inCart) {
-                                    products.push(product);
-                                }
-                            });
-                    }
-                }
-                console.log("FOR J", products);
+                //an array of promises that both gets a product from the db and pushes it to products array
+                let sessionCartProducts = $sessionStorage.cart.map(function(cartItem) {
+                    return ProductFactory.getProduct(cartItem.id)
+                    .then(function(product){
+                        let productsIds = products.map(item => item.id);
+                        if (!productsIds.includes(product.id)) products.push(product);
+                    });
+                });
+                //make sure the above promises are all resolved before returning the products array
+                //avoids returning products before everything inside sessionCartProducts has been completed asynchcroniously (spelled wrong)
+                Promise.all(sessionCartProducts);
                 return products;
             }
         }

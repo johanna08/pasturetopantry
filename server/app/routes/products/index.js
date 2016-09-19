@@ -48,7 +48,7 @@ router.put('/:productId', function(req, res, next) {
 
 router.delete('/:productId', function(req, res, next) {
   Products.destroy( {where: {id: req.params.productId}})
-  .then(function(product) {
+  .then(function() {
     res.status(204).send();
   })
   .catch(next);
