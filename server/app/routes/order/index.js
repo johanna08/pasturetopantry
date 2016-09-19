@@ -5,9 +5,24 @@ const Orders = db.model('order');
 const Items = db.model('item');
 const Promise = require('sequelize').Promise;
 
+var env = require(path.join(__dirname, '../env'));
+var stripe = require("stripe")(env.STRIPE.apiKey);
+
 //checkout for non-users
 //req.body.products is an array of objects {products: [{productId, quantity}]}
 router.post('/checkout', function(req, res, next){
+  if (!req.body.stripeToken) {
+    throw new Error('Stripe Token Required.');
+  }
+
+  stripe.charges.create({
+    amount: 2000,
+    currency: "usd",
+    source: req.body.stripeToken, // obtained with Stripe.js
+    description: "Charge for emily.harris@example.com"
+  }, function(err, charge) {
+    // asynchronously called
+  });
 
   //create a complete order with no user attached
   Orders.create({status: 'Complete'})
@@ -47,7 +62,6 @@ router.post('/checkout', function(req, res, next){
     } else next(err);
   })
 });
-
 
 router.param('userId', function(req, res, next, userId) {
   Orders.findOrCreate({
