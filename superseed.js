@@ -23,7 +23,8 @@ const seedUsers = function () {
         },
         {
             email: 'harry@hogwarts.com',
-            password: '123'
+            password: '123',
+            isAdmin: true
         },
         {
             email: 'ron@hogwarts.com',
