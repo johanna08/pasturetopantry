@@ -41,3 +41,10 @@ router.post('/user/:userId/product/:productId', function(req, res, next) {
   .catch(next);
 });
 
+router.delete('/:reviewId', function(req, res, next) {
+  Review.destroy({where: { id: req.params.reviewId} })
+    .then(function() {
+      res.status(204).send('review deleted');
+    })
+    .catch(next);
+})

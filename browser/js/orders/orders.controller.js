@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('OrdersCtrl', function($scope, $state, OrdersFactory, orders, $log) {
+app.controller('OrdersCtrl', function($scope, $state, OrdersFactory, orders) {
   $scope.orders = orders;
-  $scope.statusTypes = ["Active", "Complete", "Failed"];
+  $scope.statusTypes = ['Active', 'Complete', 'Failed'];
 });
