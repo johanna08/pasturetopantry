@@ -11,10 +11,11 @@
            <td><img src="{{ product.imageUrl }}" /> {{ product.name }} {{ product.description}}</td>
            <td>{{ product.dollarPrice | currency }}</td>
            <td>
-           <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)" ng-init="quantity=getQuantity(product.id)"></select>
+           <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)" ng-init="quantity=getQuantity(product.id)"></select><span ng-click="deleteOne(product.id)" class="glyphicon glyphicon-remove"></span>
            </td>
-
        </tr>
    </tbody>
 </table>
+<button class="btn btn-success" ng-click="updateCart()">Update Cart</button>
+<button class="btn btn-success" ng-click="clearCart()">Clear Cart</button>
 <button class="btn btn-success" ui-sref="checkout">Checkout</button>

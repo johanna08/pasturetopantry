@@ -48,13 +48,12 @@
         ]);
     });
 
-    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q) {
-
+    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, $sessionStorage, CartFactory) {
         function onSuccessfulLogin(response) {
             var user = response.data;
             Session.create(user);
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            return user;
+            CartFactory.syncSessionCartToDb();
         }
 
         // Uses the session factory to see if an
@@ -106,7 +105,12 @@
         };
 
         this.logout = function () {
-            return $http.post('/api/logout').then(function () {
+            CartFactory.syncSessionCartToDb()
+            .then(function(){
+                return $http.post('/api/logout')
+            })
+            .then(function () {
+                $sessionStorage.cart = [];
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
             });
@@ -114,7 +118,7 @@
 
     });
 
-    app.service('Session', function ($rootScope, AUTH_EVENTS) {
+    app.service('Session', function ($rootScope, AUTH_EVENTS, $sessionStorage) {
 
         var self = this;
 
@@ -134,6 +138,10 @@
 
         this.destroy = function () {
             this.user = null;
+        };
+
+        this.resetSessionCart = function() {
+            $sessionStorage.cart = [];
         };
 
     });

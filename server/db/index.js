@@ -15,8 +15,10 @@ var Item = require('./models/cart-item');
 // e.g. User.hasMany(Reports)
 
 User.hasMany(Review);
-User.hasMany(Order);
+Review.belongsTo(User);
 
+User.hasMany(Order);
+Order.belongsTo(User)
 // //join table
 // Order.belongsToMany(Products, { through: 'productOfOrder' });
 
@@ -32,3 +34,4 @@ Item.belongsTo(Products);
 
 
 Products.hasMany(Review);
+Review.belongsTo(Products);
