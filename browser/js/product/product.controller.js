@@ -2,6 +2,7 @@
 
 app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product, Session) {
     $scope.product = product;
+    $scope.userId = Session.user ? Session.user.id : null;
 
     $scope.Range = function(start, end) {
         var result = [];

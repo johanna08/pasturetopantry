@@ -17,4 +17,8 @@
         </div>
     </div>
 </div>
-<submit-review></submit-review>
+<h3>Reviews for {{ product.name }}</h3>
+<div ng-repeat = "review in product.reviews">
+    <review review = "review"></review>
+</div>
+<submit-review user-id = "userId" product-id = "product.id"></submit-review>

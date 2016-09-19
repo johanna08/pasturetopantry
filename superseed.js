@@ -12,7 +12,7 @@ const randOrder = function(){
 }
 
 const randProduct = function(){
-    return Math.ceil(Math.random() * 28);
+    return Math.ceil(Math.random() * 26);
 }
 
 const seedUsers = function () {
@@ -101,14 +101,6 @@ const seedProducts = function () {
             imageUrl: '/img/cabbage.jpg'
         },
         {
-            name: 'Carrots',
-            price: 289,
-            quantity: 15,
-            source: "Galen's Farm",
-            description: 'Bundles of carrots, perfect for sharing a snack with your pet bunny.',
-            imageUrl: '/img/carrots.jpg'
-        },
-        {
             name: 'Eggplants',
             price: 320,
             quantity: 99,
@@ -131,14 +123,6 @@ const seedProducts = function () {
             source: "Johanna's Farm",
             description: 'If the color green had a taste, it would be the taste of our fresh-picked, organic kale.',
             imageUrl: '/img/kale-bundle.jpg'
-        },
-        {
-            name: 'Lacinato Kale',
-            price: 320,
-            quantity: 175,
-            source: "Johanna's Farm",
-            description: 'If you like regular kale, get ready for a wild ride with this even kale-ier kale.',
-            imageUrl: '/img/lacinato-kale.png'
         },
         {
             name: 'Rainbow Chard',
@@ -407,7 +391,7 @@ db.sync({ force: true })
         return products.map(function(product, idx){
             if (idx < 5) return product.setCategories([1]);
             else if (idx < 17) return product.setCategories([3]);
-            else if (idx < 25) return product.setCategories([4]);
+            else if (idx < 23) return product.setCategories([4]);
             return  product.setCategories([2]);
         })
     })

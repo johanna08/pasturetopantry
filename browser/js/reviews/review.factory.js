@@ -8,22 +8,22 @@ app.factory('ReviewFactory', function($http, $log) {
   // a special method for that here.
   return {
     submitReview: function(userId, productId, updates) {
-      $http.post('api/reviews/user/' + userId + '/product/' + productId, updates)
+      return $http.post('api/reviews/user/' + userId + '/product/' + productId, updates)
       .then(sendResponse)
       .catch($log.error);
     },
     deleteReview: function(reviewId) {
-      $http.delete('api/reviews/' + reviewId)
+      return $http.delete('api/reviews/' + reviewId)
       .then(sendResponse)
       .catch($log.error);
     },
     updateReview: function(reviewId, updates) {
-      $http.put('api/reviews/' + reviewId, updates)
+      return $http.put('api/reviews/' + reviewId, updates)
       .then(sendResponse)
       .catch($log.error);
     },
     getReviews: function() {
-      $http.get('api/reviews/')
+      return $http.get('api/reviews/')
       .then(sendResponse)
       .catch($log.error);
     }
