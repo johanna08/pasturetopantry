@@ -21,8 +21,13 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     $scope.clearCart = function() {
         Session.resetSessionCart();
 
-        if (sessionUser) CartFactory.deleteAll(sessionUser)
-        //I set this up in fsa file in Session service, just resets cart to empty array
+        if (sessionUser) {
+            CartFactory.deleteAll(sessionUser)
+            .then(function(){
+                $state.reload();
+            })
+        }
+        if (!sessionUser) $state.reload();
     }
 
     $scope.total = function() {
@@ -42,16 +47,23 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
         if (sessionUser) {
             CartFactory.deleteOne(sessionUser, productId)
             .then(function(){
-                $state.go('cart');
+                $state.reload();
             })
         }
+        if (!sessionUser) $state.reload();
     };
 
     //run sync&merge from cart factory
     //check quantities from form and update before running syncSession
     $scope.updateCart = function() {
         console.log($scope.quantity);
-        if (sessionUser) CartFactory.syncSessionCartToDb();
+        if (sessionUser) {
+            CartFactory.syncSessionCartToDb()
+            .then(function(){
+                $state.reload();
+            })
+        }
+        if (!sessionUser) $state.reload();
     }
 });
 

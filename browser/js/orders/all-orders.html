@@ -8,11 +8,11 @@
  <div class="row">
    <div class="col-xs-2">
     <h3>Order #</h3>
-    <a ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.id}} </br></a>
+    <a ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}" ui-sref="orderDetail({orderId: order.id, order: order})">{{order.id}} </br></a>
    </div>
    <div class="col-xs-2">
    <h3>User</h3>
-      <a ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.user.email}}</br></a>
+      <p ng-click="" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.user.email}}</br></p>
    </div>
    <div class="col-xs-2">
       <h3>Order Total</h3>

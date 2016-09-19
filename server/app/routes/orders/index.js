@@ -10,7 +10,7 @@ const Products = db.model('product')
 module.exports = router;
 
 router.get('/', function(req, res, next) {
-  Orders.findAll({include: [{model: User, attributes: ['email'] }]})
+  Orders.findAll({include: [{model: User, attributes: ['email'] }, {model: Items, include: [Products]}]})
   .then(function(orders){
     res.status(200).send(orders);
   })
