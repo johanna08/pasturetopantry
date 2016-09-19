@@ -1,0 +1,23 @@
+<div>
+  <span>
+    <input type="text" class="form-control" placeholder="explore the farm" ng-model="nameSearch"></input>
+  </span>
+ <div class="row">
+   <div class="col-xs-3">
+    <h3>Categories</h3>
+    <a ng-click="productsByCategory(category.id)" ng-repeat="category in categories">{{category.type_name}} </br></a>
+   </div>
+   <h2>Products</h2>
+   <div class="col-xs-3" ng-repeat="product in products | filter: { name: nameSearch}">
+     <a class="thumbnail" ui-sref="product({id: product.id})">
+       <img ng-src="{{ product.imageUrl }}">
+       <div class="caption">
+         <h5>
+           <span>{{ product.name }}</span>
+         </h5>
+         <small>{{ product.description }}</small>
+       </div>
+     </a>
+   </div>
+ </div>
+</div>
