@@ -18,7 +18,7 @@ app.config(function($stateProvider) {
                                     }
                                 }
                                 if (!inCart) {
-                                    product.totalCost = $sessionStorage.cart[i].quantity * product.price;
+                                    product.totalCost = $sessionStorage.cart[i].quantity * product.dollarPrice;
                                     products.push(product);
                                 }
                             });

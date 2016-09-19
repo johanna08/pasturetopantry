@@ -4,14 +4,13 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Category = db.model('category');
 const Review = db.model('review');
-var chalk = require('chalk');
 
 module.exports = router;
 
 router.get('/', function(req, res, next) {
   Products.findAll({})
   .then(function(products) {
-    res.status(200).send(products);
+    res.send(products);
   })
   .catch(next);
 });
@@ -40,8 +39,8 @@ router.get('/item/:productId', function(req, res, next) {
 
 router.put('/:productId', function(req, res, next) {
   Products.update( req.body, {where: {id: req.params.productId}, returning: true})
-  .then(function(product) {
-    res.status(200).send(product[1][0]);
+  .then(function(response) {
+    res.send(response[1][0]);
   })
   .catch(next);
 });
@@ -54,24 +53,4 @@ router.delete('/:productId', function(req, res, next) {
   .catch(next);
 });
 
-//gets all products in a given category
-//we have a belongsToMany relationship between products/category --> generates a getProducts() getter method
-router.get('/categories/:categoryId', function(req, res, next) {
-  Category.findOne({where: {id: req.params.categoryId}})
-  .then(function(category) {
-    return category.getProducts();
-  })
-  .then(function(products) {
-    res.status(200).send(products);
-  })
-  .catch(next);
-});
 
-//returns all category types
-router.get('/allcategories', function(req, res, next) {
-  Category.findAll()
-  .then(function(categories) {
-    res.status(200).send(categories);
-  })
-  .catch(next);
-});
