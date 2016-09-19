@@ -20,10 +20,7 @@ module.exports = db.define('product', {
     },
     imageUrl: {
       type: Sequelize.STRING,
-      defaultValue: 'http://www.fillmurray.com/g/200/200',
-      validate: {
-        isUrl: true
-      }
+      defaultValue: 'http://www.fillmurray.com/g/200/200'
     },
     quantity: {
       type: Sequelize.INTEGER,
