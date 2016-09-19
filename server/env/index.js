@@ -1,4 +1,8 @@
 var path = require('path');
+
+// adds .env file variables to process.env
+require('dotenv').config();
+
 var devConfigPath = path.join(__dirname, './development.js');
 var productionConfigPath = path.join(__dirname, './production.js');
 var testConfigPath = path.join(__dirname, './testing.js');

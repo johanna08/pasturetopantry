@@ -23,6 +23,16 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
 
         if (sessionUser) CartFactory.deleteAll(sessionUser)
         //I set this up in fsa file in Session service, just resets cart to empty array
+    }
+
+    $scope.total = function() {
+      var total = 0;
+
+      for (var i = 0; i < $scope.products.length; i++) {
+        total += $scope.products[i].totalCost;
+      }
+
+      return total;
     };
 
     $scope.deleteOne = function(productId) {
@@ -63,4 +73,3 @@ app.config(function($stateProvider) {
         }
     });
 });
-
