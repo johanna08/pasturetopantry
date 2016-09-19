@@ -391,7 +391,7 @@ db.sync({ force: true })
         return products.map(function(product, idx){
             if (idx < 5) return product.setCategories([1]);
             else if (idx < 17) return product.setCategories([3]);
-            else if (idx < 25) return product.setCategories([4]);
+            else if (idx < 23) return product.setCategories([4]);
             return  product.setCategories([2]);
         })
     })
