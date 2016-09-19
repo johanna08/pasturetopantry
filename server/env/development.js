@@ -19,6 +19,7 @@ module.exports = {
   STRIPE: {
     apiKey: process.env.STRIPE_API_KEY
   },
+
   LOGGING: true,
   NATIVE: true
 };

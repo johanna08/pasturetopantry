@@ -1,3 +1,5 @@
+'use strict';
+
 const router = require('express').Router(); // eslint-disable-line new-cap
 const db = require('../../../db');
 const Products = db.model('product');
@@ -53,6 +55,8 @@ router.post('/checkout', function(req, res, next){
   .then(function(){
     res.sendStatus(201);
   })
+  //if we don't have enough quantity of product in DB, the order is marked as failed
+  //and we throw an error
   .catch(function(err){
     if (err.flag === "insufficient"){
       return err.order.update({status: 'Failed'})
@@ -63,6 +67,11 @@ router.post('/checkout', function(req, res, next){
   })
 });
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
 router.param('userId', function(req, res, next, userId) {
   Orders.findOrCreate({
     where: {
@@ -142,7 +151,7 @@ router.put('/:userId/merge', function(req, res, next){
     var updatePromises = updates.map(function(update){
       Items.findOne({
         where : {
-          productId: update.productId,
+          productId: update.id,
           orderId: req.order.id
         }
       })
@@ -155,7 +164,7 @@ router.put('/:userId/merge', function(req, res, next){
             return created.setOrder(req.order.id);
           })
           .then(function(created){
-            return created.setProduct(update.productId);
+            return created.setProduct(update.id);
           });
         }
       });
@@ -171,6 +180,19 @@ router.put('/:userId/merge', function(req, res, next){
 router.put('/:userId/checkout', function(req, res, next){
   //array of items in cart -->can access each productId of item
   //do a request to find all items in an order, include Products-->use this to access product instances
+  if (!req.body.stripeToken) {
+    throw new Error('Stripe Token Required.');
+  }
+
+  stripe.charges.create({
+    amount: 2000,
+    currency: "usd",
+    source: req.body.stripeToken, // obtained with Stripe.js
+    description: "Charge for emily.harris@example.com"
+  }, function(err, charge) {
+    // asynchronously called
+  });
+
   Items.findAll({ where: { orderId: req.order.id }, include: [Products]})
   .then(function(orderItems) {
     return orderItems.map(function(item){

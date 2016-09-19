@@ -34,7 +34,7 @@ app.factory('Products', function($http, $log){
         },
 
         getAllCategories: function(){
-            return $http.get('/api/products/allcategories')
+            return $http.get('/api/categories/')
             .then(function(response){
                 return response.data;
             })
@@ -42,7 +42,7 @@ app.factory('Products', function($http, $log){
         },
 
         fetchByCategory: function(id){
-            return $http.get('/api/products/categories/' + id)
+            return $http.get('/api/categories/' + id)
             .then(function(response){
                 return response.data;
             })

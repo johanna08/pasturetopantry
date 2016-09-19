@@ -16,7 +16,6 @@ module.exports = function (app, db) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-
         User.findOne({
                 where: {
                     google_id: profile.id
@@ -27,6 +26,7 @@ module.exports = function (app, db) {
                     return user;
                 } else {
                     return User.create({
+                        email: profile._json.email,
                         google_id: profile.id
                     });
                 }

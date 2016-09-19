@@ -4,4 +4,7 @@ npm-debug.log
 public
 .DS_Store
 coverage
+browser/img
 .env
+cert.pem
+key.pem

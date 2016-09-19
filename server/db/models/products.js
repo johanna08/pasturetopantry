@@ -1,9 +1,9 @@
 'use strict';
-var crypto = require('crypto');
-var _ = require('lodash');
-var Sequelize = require('sequelize');
+const crypto = require('crypto');
+const _ = require('lodash');
+const Sequelize = require('sequelize');
 
-var db = require('../_db');
+const db = require('../_db');
 
 module.exports = db.define('product', {
     name: {
@@ -15,15 +15,16 @@ module.exports = db.define('product', {
       allowNull: false
     },
     description: {
-      type: Sequelize.TEXT,
+      type: Sequelize.TEXT('medium'),
       allowNull: false
     },
     imageUrl: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      defaultValue: 'http://www.fillmurray.com/g/200/200'
     },
     quantity: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      defaultValue: 0
     },
     source: {
       type: Sequelize.STRING,
@@ -32,8 +33,17 @@ module.exports = db.define('product', {
 }, {
   instanceMethods: {
     reduceQuantity: function(quantity) {
-      if(this.quantity - quantity < 0) throw new Error('Insufficient Inventory');
+      if (this.quantity - quantity < 0) {
+        throw new Error('Insufficient Inventory');
+      }
       this.quantity -= quantity;
+    }
+  },
+
+  getterMethods: {
+    dollarPrice: function(){
+      let dollars = this.price / 100;
+      return dollars.toFixed(2);
     }
   }
 });

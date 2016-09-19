@@ -1,5 +1,5 @@
 'use strict';
-//this is wrong db-need to fix this!!
+
 var db = require('./_db');
 module.exports = db;
 
@@ -10,13 +10,16 @@ var Category = require('./models/product_category');
 var Review = require('./models/review');
 var Order = require('./models/order');
 var Item = require('./models/cart-item');
+var OrderDetail = require('./models/order-details');
 
 // if we had more models, we could associate them in this file
 // e.g. User.hasMany(Reports)
 
 User.hasMany(Review);
-User.hasMany(Order);
+Review.belongsTo(User);
 
+User.hasMany(Order);
+Order.belongsTo(User)
 // //join table
 // Order.belongsToMany(Products, { through: 'productOfOrder' });
 
@@ -27,7 +30,11 @@ Category.belongsToMany(Products, {through: 'productCategory'});
 //Join tables for item with order and product
 Item.belongsTo(Order);
 Order.hasMany(Item);
+
 Item.belongsTo(Products);
 
+//join order details with cart details
+OrderDetail.belongsTo(Item);
 
 Products.hasMany(Review);
+Review.belongsTo(Products);

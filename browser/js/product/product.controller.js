@@ -1,32 +1,21 @@
 'use strict';
 
-app.controller('ProductCtrl', function($scope, ProductFactory, $log, $sessionStorage, product) {
+app.controller('ProductCtrl', function($scope, ProductFactory, $log, product, Session, $sessionStorage) {
     $scope.product = product;
+    $scope.userId = Session.user ? Session.user.id : null;
 
     $scope.Range = function(start, end) {
         var result = [];
-        for (var i = start; i <= end; i++) {
+        for (let i = start; i <= end; i++) {
             result.push(i);
         }
         return result;
     };
 
+    //move this logic to backwards
     if (!$sessionStorage.cart) {
-        $sessionStorage.cart = [];
+        Session.resetSessionCart();
     }
 
-    $scope.addToCart = function(id, quantity) {
-        for (var i = 0; i < $sessionStorage.cart.length; i++) {
-            if ($sessionStorage.cart[i].id === id) {
-                var inCart = true;
-                $sessionStorage.cart[i].quantity += quantity;
-            }
-        }
-
-        if (!inCart) {
-            $sessionStorage.cart.push({ id: id, quantity: quantity });
-        }
-
-        console.log($sessionStorage.cart);
-    };
+    $scope.addToCart = ProductFactory.addToCart;
 });
