@@ -16,6 +16,7 @@ module.exports = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
+
   LOGGING: true,
   NATIVE: true
 };

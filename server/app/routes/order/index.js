@@ -52,6 +52,7 @@ router.post('/checkout', function(req, res, next){
 });
 
 
+
 router.param('userId', function(req, res, next, userId) {
   Orders.findOrCreate({
     where: {

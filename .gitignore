@@ -6,3 +6,5 @@ public
 coverage
 browser/img
 .env
+cert.pem
+key.pem
