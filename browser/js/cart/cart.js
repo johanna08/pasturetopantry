@@ -12,15 +12,15 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     };
 
     $scope.getQuantity = function(id){
-    for (var i = 0; i < $sessionStorage.cart.length; i++) {
+    for (let i = 0; i < $sessionStorage.cart.length; i++) {
             if ($sessionStorage.cart[i].id === id) return $sessionStorage.cart[i].quantity;
         }
     };
 
     $scope.total = function() {
-      var total = 0;
+      let total = 0;
 
-      for (var i = 0; i < $scope.products.length; i++) {
+      for (let i = 0; i < $scope.products.length; i++) {
         total += $scope.products[i].totalCost;
       }
 

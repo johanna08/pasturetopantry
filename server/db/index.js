@@ -31,6 +31,6 @@ Order.hasMany(Item);
 Item.belongsTo(Products);
 
 //join order details with cart details
-OrderDetail.belongsTo(Item);
+OrderDetail.belongsTo(Order);
 
 Products.hasMany(Review);
