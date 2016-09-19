@@ -7,9 +7,9 @@
        </tr>
    </thead>
    <tbody>
-       <tr ng-repeat="product in products">
-           <td><img src="{{ product.imageUrl }}" /> {{ product.name }} {{ product.description}}</td>
-           <td>{{ product.dollarPrice | currency }}</td>
+       <tr ng-repeat="item in order.items">
+           <td>{{ item.product.name }} {{ item.product.description}}</td>
+           <td>{{ item.product.dollarPrice | currency }}</td>
            <td>
            <select ng-model="quantity" ng-options="quantity for quantity in Range(1, product.quantity)" ng-init="quantity=getQuantity(product.id)"></select><span ng-click="deleteOne(product.id)" class="glyphicon glyphicon-remove"></span>
            </td>
