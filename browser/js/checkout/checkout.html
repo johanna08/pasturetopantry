@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class="col-xs-8">
-    <form action="/checkout" method="POST" id="payment-form">
+    <form action="/api/checkout" method="POST" id="payment-form">
       <h3>Shipping Details:</h3>
       <div class="form-row">
         <label>
@@ -57,7 +57,7 @@
           <input type="text" size="4" data-stripe="cvc">
         </label>
       </div>
-      <input type="submit" class="submit" value="Submit Payment">
+      <input type="submit" class="submit" value="Submit Payment" ui-sref="checkoutcomplete">
     </form>
   </div>
   <div class="col-xs-4">
