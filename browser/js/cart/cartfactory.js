@@ -55,7 +55,7 @@ app.factory('CartFactory', function($http, $log, $sessionStorage, Session){
         console.log('SESSIONSTORAGECART AT BEGINNING OF LOGIN PROCESS', $sessionStorage.cart);
 
         if ($sessionStorage.cart.length){
-             factoryObj.mergeMyCart(user.id, {updates: $sessionStorage.cart})
+             return factoryObj.mergeMyCart(user.id, {updates: $sessionStorage.cart})
              .then(function(){
                 console.log('LOGIN INITIATED MERGE');
                 return factoryObj.fetchMyCart(user.id);
@@ -68,7 +68,7 @@ app.factory('CartFactory', function($http, $log, $sessionStorage, Session){
                   return user;
              });
         } else {
-            factoryObj.fetchMyCart(user.id)
+            return factoryObj.fetchMyCart(user.id)
             .then(function(result){
                 console.log('LOGIN INITIATED FETCH MY CART, NO MERGE');
                 //we only need item quantity and productID on storagesessions

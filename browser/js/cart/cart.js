@@ -46,6 +46,11 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
             })
         }
     };
+
+    //run sync&merge from cart factory
+    $scope.updateCart = function() {
+        if (sessionUser) CartFactory.syncSessionCartToDb();
+    }
 });
 
 

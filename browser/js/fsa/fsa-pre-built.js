@@ -85,17 +85,6 @@
 
         };
 
-        this.safelyGetLoggedInUser = function(){
-            return $http.get('/session')
-            .then(function(response){
-               var user = response.data;
-               return user;
-            })
-            .catch(function () {
-                return null;
-            });
-        }
-
         this.signup = function(credentials) {
             return $http.post('/api/signup', credentials)
             .then(function(response) {
@@ -116,7 +105,11 @@
         };
 
         this.logout = function () {
-            return $http.post('/api/logout').then(function () {
+            CartFactory.syncSessionCartToDb()
+            .then(function(){
+                return $http.post('/api/logout')
+            })
+            .then(function () {
                 $sessionStorage.cart = [];
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
