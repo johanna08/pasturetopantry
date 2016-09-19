@@ -23,7 +23,8 @@ const seedUsers = function () {
         },
         {
             email: 'harry@hogwarts.com',
-            password: '123'
+            password: '123',
+            isAdmin: true
         },
         {
             email: 'ron@hogwarts.com',
@@ -48,7 +49,7 @@ const seedProducts = function () {
             price: 350,
             quantity: 80,
             source: "Galen's Farm",
-            description: 'Delicious, fresh-picked Honeycrisp apples from, sold by the bag.',
+            description: 'Delicious, fresh-picked Honeycrisp apples, sold by the bag.',
             imageUrl: '/img/apples.jpg'
         },
         {
