@@ -23,6 +23,7 @@ router.post('/checkout', function(req, res, next){
   //   source: req.body.stripeToken, // obtained with Stripe.js
   //   description: "Charge for emily.harris@example.com"
   // }, function(err, charge) {
+  //   console.log("CHARGE:", req.body.stripeToken);
   //   if (err) throw new Error;
   //   // asynchronously called
   // });
