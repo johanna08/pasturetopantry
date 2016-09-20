@@ -23,4 +23,20 @@ router.get('/:categoryId', function(req, res, next) {
   .catch(next);
 });
 
+router.post('/', function(req, res, next) {
+  Category.findOrCreate({where: req.body})
+  .then(function(category) {
+    res.status(201).send(category);
+  })
+  .catch(next);
+});
+
+router.delete('/:id', function(req, res, next) {
+  Category.destroy({where: {id: req.params.id}})
+  .then(function() {
+    res.sendStatus(204);
+  })
+  .catch(next);
+});
+
 module.exports = router;

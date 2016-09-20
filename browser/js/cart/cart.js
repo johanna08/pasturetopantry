@@ -3,6 +3,7 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
 
     $scope.products = products;
     var sessionUser = CartFactory.getSessionUser();
+    $scope.error = false;
 
     $scope.Range = function(start, end) {
         var result = [];
@@ -63,9 +64,51 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
             })
         }
         if (!sessionUser) $state.reload();
-    }
-});
+    };
 
+    //this is for stripe payment, not cart
+    $scope.submitPayment = function(){
+        Stripe.card.createToken($scope.card, stripeResponseHandler);
+        // Prevent the form from being submitted:
+        return false;
+    }
+
+    const stripeResponseHandler = function(status, response) {
+    // Grab the token info from Stripe:
+    if (response.error) { // Problem!
+        // Show the errors from Stripe:
+        console.log(response.error.message);
+    } else { // Token was created!
+        // Get the token ID:
+        var token = response.id;
+        if (Session.user) {
+            CartFactory.syncSessionCartToDb()
+                .then(function() {
+                    return CartFactory.userCheckout(Session.user.id, token, $scope.email);
+                })
+                .then(function() {
+                    $scope.error = false;
+                    $state.go('checkoutcomplete');
+                    return Session.resetSessionCart();
+                })
+                .catch(function(error){
+                    $scope.error = error;
+                });
+        } else {
+            CartFactory.nonUserCheckout(products, token, $scope.email)
+                .then(function() {
+                    $scope.error = false;
+                    $state.go('checkoutcomplete');
+                    return Session.resetSessionCart();
+                })
+                .catch(function(error){
+                    $scope.error = error;
+                });
+        }
+    }
+}
+
+});
 
 app.config(function($stateProvider) {
     $stateProvider.state('cart', {
