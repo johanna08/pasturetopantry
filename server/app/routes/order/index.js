@@ -6,9 +6,9 @@ const Products = db.model('product');
 const Orders = db.model('order');
 const Items = db.model('item');
 const Promise = require('sequelize').Promise;
-
-// var env = require(path.join(__dirname, '../env'));
-// var stripe = require("stripe")(env.STRIPE.apiKey);
+// const path = require('path');
+// const env = require(path.join(__dirname, '../../../env'));
+// const stripe = require("stripe")(env.STRIPE.apiKey);
 
 //checkout for non-users
 //req.body.products is an array of objects {products: [{productId, quantity}]}
@@ -23,6 +23,8 @@ router.post('/checkout', function(req, res, next){
   //   source: req.body.stripeToken, // obtained with Stripe.js
   //   description: "Charge for emily.harris@example.com"
   // }, function(err, charge) {
+  //   console.log("CHARGE:", req.body.stripeToken);
+  //   if (err) throw new Error;
   //   // asynchronously called
   // });
 
@@ -178,16 +180,16 @@ router.put('/:userId/checkout', function(req, res, next){
   // if (!req.body.stripeToken) {
   //   throw new Error('Stripe Token Required.');
   // }
-
-  stripe.charges.create({
-    amount: 2000,
-    currency: "usd",
-    source: req.body.stripeToken, // obtained with Stripe.js
-    description: "Charge for emily.harris@example.com"
-  }, function(err, charge) {
-    console.err(err);
-    // asynchronously called
-  });
+  
+  // stripe.charges.create({
+  //   amount: 2000,
+  //   currency: "usd",
+  //   source: req.body.stripeToken, // obtained with Stripe.js
+  //   description: "Charge for emily.harris@example.com"
+  // }, function(err, charge) {
+  //   if (err) throw new Error;
+  //   // asynchronously called
+  // });
 
   Items.findAll({ where: { orderId: req.order.id }, include: [Products]})
   .then(function(orderItems) {
