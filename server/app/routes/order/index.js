@@ -7,42 +7,18 @@ const Orders = db.model('order');
 const Items = db.model('item');
 const OrderDetails = db.model('orderDetails');
 const Promise = require('sequelize').Promise;
-// const path = require('path');
-// const env = require(path.join(__dirname, '../../../env'));
-// const stripe = require("stripe")(env.STRIPE.apiKey);
 
 //checkout for non-users
 //req.body.products is an array of objects {products: [{productId, quantity}]}
 //req.body.token = token from Stripe
 //req.body.email = email
 router.post('/checkout', function(req, res, next){
-  // if (!req.body.stripeToken) {
-  //   throw new Error('Stripe Token Required.');
-  // }
 
-  // stripe.charges.create({
-  //   amount: 2000,
-  //   currency: "usd",
-  //   source: req.body.stripeToken, // obtained with Stripe.js
-  //   description: "Charge for emily.harris@example.com"
-  // }, function(err, charge) {
-  //   console.log("CHARGE:", req.body.stripeToken);
-  //   if (err) throw new Error;
-  //   // asynchronously called
-  // });
   var creatingOrders = [Orders.create({status: 'Complete'}), OrderDetails.create({token: req.body.token, email: req.body.email})];
   Promise.all(creatingOrders)
   .then(function([order, details]){
     return order.setOrderDetail(details.id);
   })
-
-  // //create a complete order with no user attached
-  // Orders.create({status: 'Complete'})
-  // //
-  // .then(function(order){
-  //   return order.setOrderDetails()
-  // })
-  //get to here returning an order
   .then(function(order){
     return req.body.products.map(function(product){
        //create associations for order and product
@@ -106,54 +82,7 @@ router.get('/:userId', function(req, res, next){
   res.status(200).send(req.order);
 });
 
-// example response:
-// {
-//   "id": 1,
-//   "status": "Active",
-//   "createdAt": "2016-09-15T16:50:36.926Z",
-//   "updatedAt": "2016-09-15T16:50:37.013Z",
-//   "userId": 1,
-//   "items": [
-//     {
-//       "id": 1,
-//       "quantity": 1,
-//       "createdAt": "2016-09-15Ts16:50:36.943Z",
-//       "updatedAt": "2016-09-15T16:50:37.036Z",
-//       "orderId": 1,
-//       "productId": 2,
-//       "product": {
-//         "id": 2,
-//         "name": "bananas",
-//         "price": 1,
-//         "description": "free-trade bananas",
-//         "imageUrl": "http://pngimg.com/upload/banana_PNG835.png",
-//         "quantity": "1",
-//         "source": "Jo's Farm",
-//         "createdAt": "2016-09-15T16:50:36.882Z",
-//         "updatedAt": "2016-09-15T16:50:36.882Z"
-//       }
-//     },
-//     {
-//       "id": 2,
-//       "quantity": 3,
-//       "createdAt": "2016-09-15T16:50:36.943Z",
-//       "updatedAt": "2016-09-15T16:50:37.036Z",
-//       "orderId": 1,
-//       "productId": 3,
-//       "product": {
-//         "id": 3,
-//         "name": "eggs",
-//         "price": 5,
-//         "description": "free-range, grass-fed",
-//         "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Egg_colours.jpg",
-//         "quantity": "12",
-//         "source": "Jo's Farm",
-//         "createdAt": "2016-09-15T16:50:36.882Z",
-//         "updatedAt": "2016-09-15T16:50:36.882Z"
-//       }
-//     }
-//   ]
-// }
+
 
 //merges current cart items with those in the db
 router.put('/:userId/merge', function(req, res, next){
@@ -190,19 +119,6 @@ router.put('/:userId/merge', function(req, res, next){
 router.put('/:userId/checkout', function(req, res, next){
   //array of items in cart -->can access each productId of item
   //do a request to find all items in an order, include Products-->use this to access product instances
-  // if (!req.body.stripeToken) {
-  //   throw new Error('Stripe Token Required.');
-  // }
-
-  // stripe.charges.create({
-  //   amount: 2000,
-  //   currency: "usd",
-  //   source: req.body.stripeToken, // obtained with Stripe.js
-  //   description: "Charge for emily.harris@example.com"
-  // }, function(err, charge) {
-  //   if (err) throw new Error;
-  //   // asynchronously called
-  // });
 
   Items.findAll({ where: { orderId: req.order.id }, include: [Products]})
   .then(function(orderItems) {
@@ -218,10 +134,8 @@ router.put('/:userId/checkout', function(req, res, next){
       OrderDetails.create({token: req.body.token, email: req.body.email})]);
   })
   .then(function([order, details]){
-    console.log('GOT HERE');
     return order.setOrderDetail(details.id);
   })
-    //get here with order
   .then(function(order) {
     return order.update({ status: 'Complete'});
   })
