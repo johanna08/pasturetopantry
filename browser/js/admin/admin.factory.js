@@ -29,7 +29,11 @@ app.factory('AdminFactory', function($http, $log) {
       .then(sendResponse);
     },
     deleteCategory: function(id) {
-      return $http.delete('/api/categories' + id)
+      return $http.delete('/api/categories/' + id)
+      .then(sendResponse);
+    },
+    editCategory: function(categoryId, newCategoryName) {
+      return $http.put('/api/categories', {id: categoryId, type_name: newCategoryName})
       .then(sendResponse);
     },
     displayProductCategories: function(product) {
