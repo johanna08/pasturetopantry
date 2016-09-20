@@ -4,6 +4,7 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Category = db.model('category');
 const Review = db.model('review');
+const User = db.model('user');
 
 module.exports = router;
 
@@ -25,7 +26,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/item/:productId', function(req, res, next) {
-  Products.findOne({where: {id: req.params.productId}, include: [Review]})
+  Products.findOne({where: {id: req.params.productId}, include: [{model: Review, include: [{model: User, attributes: {exclude: ['password', 'twitter_id', 'salt', 'google_id', 'facebook_id'] }}]}]})
   .then(function(product) {
     if (!product) {
       var err = new Error('Product does not exist!');

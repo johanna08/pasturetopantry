@@ -20,9 +20,6 @@ app.factory('UserFactory', function($http, $log, Session, ProductFactory, $state
       console.log(items);
       for (let item of items) ProductFactory.addToCart(item.productId, item.quantity);
       return null;
-    },
-    goToOrder: function(order) {
-      $state.go('orderDetail', {orderId: order.id, order: order});
     }
   }
 });

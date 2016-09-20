@@ -7,7 +7,7 @@
  <div class="row">
    <div class="col-xs-2">
     <h3>Order #</h3>
-    <a ng-repeat="order in orders" ng-click="goToOrder(order)">{{order.id}} </br></a>
+    <a ng-repeat="order in orders" ui-sref="orderDetail({orderId: order.id, order: order})">{{order.id}} </br></a>
    </div>
    <div class="col-xs-2">
       <h3>Order Total</h3>
@@ -22,7 +22,7 @@
    </div>
    <div class="col-xs-1">
       <h3>Reorder</h3>
-      <span class="glyphicon glyphicon-plus-sign" ng-click="reorder(order.items)" ng-repeat="order in orders"></br></span>
+      <span class="glyphicon glyphicon-plus-sign" ng-click="reorder(order.items)" ui-sref="cart" ng-repeat="order in orders"></br></span>
    </div>
   </div>
 
