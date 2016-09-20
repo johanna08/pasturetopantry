@@ -1,20 +1,17 @@
 'use strict';
 
-app.controller('AdminCtrl', function($scope, $state, AdminFactory, Products, categories, $log, products) {
+app.controller('AdminCtrl', function($scope, AdminFactory, Products, categories, $log, products) {
   $scope.categorySelection = {};
   $scope.categories = categories;
+  $scope.products = products;
+  $scope.displayProductCategories = AdminFactory.displayProductCategories;
+  $scope.deleteProduct = AdminFactory.deleteProduct;
 
   $scope.addProduct = function(product) {
-    let selectedCategories = Object.keys($scope.categorySelection)
-    let categories = $scope.categories.reduce(function(arr, obj) {
-      if (selectedCategories.includes(obj.type_name)) arr.push(obj.id);
-      return arr;
-    }, []);
-    AdminFactory.addProduct({product: product, categories: categories})
-    .then(function(product) {
-      $state.go('product', { id: product.id });
-    })
+    AdminFactory.addProduct(product, $scope.categories, $scope.categorySelection)
     .catch($log.error);
   }
+
+  $scope.deleteProduct = AdminFactory.deleteProduct;
 
 })

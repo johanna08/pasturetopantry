@@ -7,8 +7,13 @@ app.factory('AdminFactory', function($http, $log) {
 
   return {
     //product is from controller scope added by ng-model in form -> product obj
-    addProduct: function(product) {
-      return $http.post('/api/products', product)
+    addProduct: function(product, categories, selectCategories) {
+      let selectedCategories = Object.keys(selectCategories);
+      let addCategories = categories.reduce(function(arr, obj) {
+        if (selectedCategories.includes(obj.type_name)) arr.push(obj.id);
+        return arr;
+      }, []);
+      return $http.post('/api/products', {product: product, categories: addCategories})
       .then(sendResponse)
       .catch($log.error);
 
@@ -33,6 +38,9 @@ app.factory('AdminFactory', function($http, $log) {
       return $http.delete('/api/categories' + id)
       .then(sendResponse)
       .catch($log.error);
+    },
+    displayProductCategories: function(product) {
+      return product.categories.map(category => category.type_name).join(', ')
     }
   }
 });

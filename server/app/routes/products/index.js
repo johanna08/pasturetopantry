@@ -9,7 +9,7 @@ const User = db.model('user');
 module.exports = router;
 
 router.get('/', function(req, res, next) {
-  Products.findAll({})
+  Products.findAll({include: [Category]})
   .then(function(products) {
     res.send(products);
   })
