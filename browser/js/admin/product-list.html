@@ -1,35 +1,27 @@
+<h1>All Products</h1>
 <div>
 <span>
-    <input type="text" class="form-control" placeholder="search by user email" ng-model="userSearch"></input>
-    <select ng-model="statusSearch" ng-options="status for status in statusTypes" ng-change="allStatus(statusSearch)">
-    </select>
+    <input type="text" class="form-control" placeholder="search by product name" ng-model="productSearch"></input>
 </span>
  <div class="row">
    <div class="col-xs-2">
-    <h3>Order #</h3>
-    <a ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}" ui-sref="orderDetail({orderId: order.id, order: order})">{{order.id}} </br></a>
+    <h3>Name</h3>
+    <a ng-repeat="product in products | filter: productSearch" ui-sref="editProduct({productId: product.id, product: product})">{{product.name}} </br></a>
    </div>
    <div class="col-xs-2">
-   <h3>User</h3>
-      <p ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.user.email}}</br></p>
+   <h3>Quantity</h3>
+      <p ng-repeat="product in products | filter: productSearch">{{product.quantity}}</br></p>
    </div>
    <div class="col-xs-2">
-      <h3>Order Total</h3>
-      <p ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{orderTotal(order.items) | currency}}</br></p>
+      <h3>Price</h3>
+      <p ng-repeat="product in products | filter: productSearch">{{product.price | currency}}</br></p>
    </div>
    <div class="col-xs-2">
-      <h3>Order Status</h3>
-      <p ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">{{order.status}}</br></p>
-   </div>
-   <div class="col-xs-2">
-      <h3>Change Status</h4>
-      <div ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">
-        <select ng-model="statusChange" ng-options="status for status in statusTypes">
-        </select><span ng-click="" class="glyphicon glyphicon-ok"></span></br>
-      </div>
+      <h3>Categories</h3>
+      <p ng-repeat="product in products | filter: productSearch"></br>{{displayProductCategories(product)}}</p>
    </div>
    <div class="col-xs-1">
       <h3>Delete</h3>
-      <span class="glyphicon glyphicon-remove" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}"></br></span>
+      <a ng-repeat="product in products | filter: productSearch"><span class="glyphicon glyphicon-remove delete-button" ng-click="deleteProduct(product.id)"></span></br></a>
    </div>
   </div>
