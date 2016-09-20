@@ -180,7 +180,7 @@ router.put('/:userId/checkout', function(req, res, next){
   // if (!req.body.stripeToken) {
   //   throw new Error('Stripe Token Required.');
   // }
-
+  
   // stripe.charges.create({
   //   amount: 2000,
   //   currency: "usd",

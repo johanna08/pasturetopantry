@@ -23,7 +23,8 @@ const seedUsers = function () {
         },
         {
             email: 'harry@hogwarts.com',
-            password: '123'
+            password: '123',
+            isAdmin: true
         },
         {
             email: 'ron@hogwarts.com',
@@ -48,7 +49,7 @@ const seedProducts = function () {
             price: 350,
             quantity: 80,
             source: "Galen's Farm",
-            description: 'Delicious, fresh-picked Honeycrisp apples from, sold by the bag.',
+            description: 'Delicious, fresh-picked Honeycrisp apples, sold by the bag.',
             imageUrl: '/img/apples.jpg'
         },
         {
@@ -154,7 +155,7 @@ const seedProducts = function () {
             quantity: 678,
             source: "Brook's Farm",
             description: 'Packed with nutrients and organically grown -- what more could you want?',
-            imageUrl: '/img/pork-chops.jpg'
+            imageUrl: '/img/spinach.jpg'
         },
         {
             name: 'Zucchini',
@@ -269,16 +270,16 @@ const seedCategories = function () {
 
     const categories = [
         {
-            type_name: 'fruit',
+            type_name: 'Fruit',
         },
         {
-            type_name: 'dairy',
+            type_name: 'Dairy',
         },
         {
-            type_name: 'vegetables',
+            type_name: 'Vegetables',
         },
         {
-            type_name: 'meat',
+            type_name: 'Meat',
         }
 
     ];
@@ -390,7 +391,7 @@ db.sync({ force: true })
     .then(function(products){
         return products.map(function(product, idx){
             if (idx < 5) return product.setCategories([1]);
-            else if (idx < 17) return product.setCategories([3]);
+            else if (idx < 15) return product.setCategories([3]);
             else if (idx < 23) return product.setCategories([4]);
             return  product.setCategories([2]);
         })
