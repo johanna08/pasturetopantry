@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <label for="content">Review Details</label>
-        <input type="text" ng-model="review.content" class="form-control" id="review-content" placeholder="Enter your review" required>
+        <input type="text" ng-model="review.content" class="form-control" id="review-content" placeholder="Enter your review" minlength=1 maxlength= 500 required>
     </div>
     <button class="btn btn-default" ng-click="submitReview()" ng-disabled = "reviewForm.$invalid">Submit Review</button>
     <div ng-app="app" ng-controller="RatingController as rating" class="container">

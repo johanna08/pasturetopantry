@@ -1,12 +1,28 @@
 #home {
-  fullstack-logo {
-    padding-top: 30px;
-    width: 150px;
-    margin: 0 auto;
-  }
-  h1 {
-    margin-top: 40px;
-    text-align: center;
-  }
-}
 
+  margin: 0 auto;
+  width: 90%;
+  @include clearfix;
+
+  .carousel {
+    float: right;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    .carousel-inner {
+      height: 80vh;
+    }
+    .carousel-control {
+      background: none;
+    }
+    .carousel-indicators {
+      display: none;
+    }
+    img {
+      max-width: 80vw;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
+}
