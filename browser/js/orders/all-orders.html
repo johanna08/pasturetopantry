@@ -30,6 +30,6 @@
    </div>
    <div class="col-xs-1">
       <h3>Delete</h3>
-      <span class="glyphicon glyphicon-remove" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}"></br></span>
+      <a ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}"><span class="glyphicon glyphicon-remove"></span></br></a>
    </div>
   </div>
