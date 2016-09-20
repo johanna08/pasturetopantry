@@ -56,7 +56,6 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     //run sync&merge from cart factory
     //check quantities from form and update before running syncSession
     $scope.updateCart = function() {
-        console.log($scope.quantity);
         if (sessionUser) {
             CartFactory.syncSessionCartToDb()
             .then(function(){
