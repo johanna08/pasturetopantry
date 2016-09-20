@@ -3,6 +3,7 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
 
     $scope.products = products;
     var sessionUser = CartFactory.getSessionUser();
+    $scope.error = false;
 
     $scope.Range = function(start, end) {
         var result = [];
@@ -86,15 +87,24 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
                     return CartFactory.userCheckout(Session.user.id, token, $scope.email);
                 })
                 .then(function() {
+                    $scope.error = false;
+                    $state.go('checkoutcomplete');
                     return Session.resetSessionCart();
+                })
+                .catch(function(error){
+                    $scope.error = error;
                 });
         } else {
             CartFactory.nonUserCheckout(products, token, $scope.email)
                 .then(function() {
+                    $scope.error = false;
+                    $state.go('checkoutcomplete');
                     return Session.resetSessionCart();
+                })
+                .catch(function(error){
+                    $scope.error = error;
                 });
         }
-
     }
 }
 

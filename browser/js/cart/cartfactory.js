@@ -34,14 +34,12 @@ app.factory('CartFactory', function($http, $log, $sessionStorage, Session){
       userCheckout: function(userId, token, email){
         return $http.put('api/order/' + userId + '/checkout', {token, email})
         .then(sendResponse)
-        .catch($log.error);
       },
     //checkout as a non-user
     //products should be an aray of objects {products: [{productId, quantity}]}
       nonUserCheckout: function(products, token, email){
         return $http.post('api/order/checkout', {products, token, email})
         .then(sendResponse)
-        .catch($log.error);
       },
       getSessionUser: function() {
         if (Session.user) return Session.user.id;
