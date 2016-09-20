@@ -2,7 +2,7 @@
 
 app.controller('OrdersCtrl', function($scope, $state, OrdersFactory, orders, OrderFactory) {
   $scope.orders = orders;
-  var allStatusTypes = ['All', 'Active', 'Complete', 'Failed'];
+  var allStatusTypes = ['Active', 'Complete', 'Failed'];
   $scope.statusTypes = ['All', 'Active', 'Complete', 'Failed'];
 
   $scope.allStatus = function() {
