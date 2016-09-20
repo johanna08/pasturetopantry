@@ -1,9 +1,8 @@
 'use strict';
 
-app.controller('AdminCtrl', function($scope, $state, AdminFactory, Products, categories, $log) {
+app.controller('AdminCtrl', function($scope, $state, AdminFactory, Products, categories, $log, products) {
   $scope.categorySelection = {};
   $scope.categories = categories;
-
 
   $scope.addProduct = function(product) {
     let selectedCategories = Object.keys($scope.categorySelection)

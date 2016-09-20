@@ -1,0 +1,20 @@
+<ul class="nav nav-pills nav-justified">
+  <li>
+      <a><span class="glyphicon glyphicon-user"></span>
+User Management</a>
+  </li>
+  <li>
+    <a ui-sref="adminHome.allorders"><span class="glyphicon glyphicon-shopping-cart"></span> Order Management</a>
+  </li>
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cutlery"></span>
+      Product Management<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a ui-sref="adminHome.productList">Product List</a></li>
+        <li><a>Add Products</a></li>
+        <li><a>Add/Edit Product Categories</a></li>
+    </ul>
+  </li>
+</ul>
+<ui-view></ui-view>
