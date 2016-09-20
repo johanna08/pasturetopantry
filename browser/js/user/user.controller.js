@@ -9,5 +9,4 @@ app.controller('UserCtrl', function($scope, $state, UserFactory, userData) {
 
   $scope.reorder = UserFactory.reorder;
 
-  $scope.goToOrder = UserFactory.goToOrder;
 });
