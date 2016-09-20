@@ -24,7 +24,7 @@ router.post('/checkout', function(req, res, next){
        //create associations for order and product
        return Items.create({quantity: product.quantity})
        .then(function(item){
-          return item.setProduct(product.productId);
+          return item.setProduct(product.id);
        })
        .then(function(item){
           return item.setOrder(order.id);

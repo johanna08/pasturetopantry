@@ -69,32 +69,36 @@ app.controller('CartCtrl', function($scope, ProductFactory, $sessionStorage, pro
     $scope.submitPayment = function(){
         Stripe.card.createToken($scope.card, stripeResponseHandler);
         // Prevent the form from being submitted:
-        // console.log("FORM SUBMISSION HAPPENED");
         return false;
     }
 
-    stripeResponseHandler = function(status, response) {
-    // Grab the form:
-    let card = $scope.card;
-    // console.log("ENTERED FXN");
+    const stripeResponseHandler = function(status, response) {
+    // Grab the token info from Stripe:
     if (response.error) { // Problem!
-        // Show the errors on the form:
+        // Show the errors from Stripe:
         console.log(response.error.message);
     } else { // Token was created!
         // Get the token ID:
         var token = response.id;
-        console.log("STATUS", status, "RESPONSE:", response, "TOKEN:", token);
-        // Insert the token ID into the form so it gets submitted to the server:
-        // $form.append($('<input type="hidden" name="stripeToken">').val(token));
-        // // Submit the form:
-        // $form.get(0).submit();
+        if (Session.user) {
+            CartFactory.syncSessionCartToDb()
+                .then(function() {
+                    return CartFactory.userCheckout(Session.user.id, token, $scope.email);
+                })
+                .then(function() {
+                    return Session.resetSessionCart();
+                });
+        } else {
+            CartFactory.nonUserCheckout(products, token, $scope.email)
+                .then(function() {
+                    return Session.resetSessionCart();
+                });
+        }
 
     }
 }
 
-
 });
-
 
 app.config(function($stateProvider) {
     $stateProvider.state('cart', {
