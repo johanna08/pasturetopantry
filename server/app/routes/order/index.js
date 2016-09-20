@@ -5,6 +5,7 @@ const db = require('../../../db');
 const Products = db.model('product');
 const Orders = db.model('order');
 const Items = db.model('item');
+const OrderDetails = db.model('orderDetails');
 const Promise = require('sequelize').Promise;
 // const path = require('path');
 // const env = require(path.join(__dirname, '../../../env'));
@@ -12,6 +13,8 @@ const Promise = require('sequelize').Promise;
 
 //checkout for non-users
 //req.body.products is an array of objects {products: [{productId, quantity}]}
+//req.body.token = token from Stripe
+//req.body.email = email
 router.post('/checkout', function(req, res, next){
   // if (!req.body.stripeToken) {
   //   throw new Error('Stripe Token Required.');
@@ -27,9 +30,19 @@ router.post('/checkout', function(req, res, next){
   //   if (err) throw new Error;
   //   // asynchronously called
   // });
+  var creatingOrders = [Orders.create({status: 'Complete'}), OrderDetails.create({token: req.body.token, email: req.body.email})];
+  Promise.all(creatingOrders)
+  .then(function([order, details]){
+    return order.setOrderDetail(details.id);
+  })
 
-  //create a complete order with no user attached
-  Orders.create({status: 'Complete'})
+  // //create a complete order with no user attached
+  // Orders.create({status: 'Complete'})
+  // //
+  // .then(function(order){
+  //   return order.setOrderDetails()
+  // })
+  //get to here returning an order
   .then(function(order){
     return req.body.products.map(function(product){
        //create associations for order and product
@@ -180,7 +193,7 @@ router.put('/:userId/checkout', function(req, res, next){
   // if (!req.body.stripeToken) {
   //   throw new Error('Stripe Token Required.');
   // }
-  
+
   // stripe.charges.create({
   //   amount: 2000,
   //   currency: "usd",
@@ -201,13 +214,19 @@ router.put('/:userId/checkout', function(req, res, next){
     return Promise.all(arrayOfPromises);
   })
   .then(function(){
-    return Orders.findById(req.order.id);
+    return Promise.all([Orders.findById(req.order.id),
+      OrderDetails.create({token: req.body.token, email: req.body.email})]);
   })
+  .then(function([order, details]){
+    console.log('GOT HERE');
+    return order.setOrderDetail(details.id);
+  })
+    //get here with order
   .then(function(order) {
     return order.update({ status: 'Complete'});
   })
   .then(function() {
-    res.sendStatus(204);
+    res.sendStatus(201);
   })
   .catch(next);
 });
