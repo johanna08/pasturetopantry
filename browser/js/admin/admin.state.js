@@ -11,4 +11,9 @@ app.config(function ($stateProvider) {
           }
         }
     });
+
+    $stateProvider.state('adminHome.addCategory', {
+        templateUrl: 'js/admin/add-category.html',
+        controller: 'AdminCtrl',
+    });
 });

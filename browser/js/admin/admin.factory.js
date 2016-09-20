@@ -23,6 +23,16 @@ app.factory('AdminFactory', function($http, $log) {
       return $http.get('api/reviews')
       .then(sendResponse)
       .catch($log.error);
+    },
+    addCategory: function(category) {
+      return $http.post('/api/categories', category)
+      .then(sendReponse)
+      .catch($log.error);
+    },
+    deleteCategory: function(id) {
+      return $http.delete('/api/categories' + id)
+      .then(sendResponse)
+      .catch($log.error);
     }
   }
 });
