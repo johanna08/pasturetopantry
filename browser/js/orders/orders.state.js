@@ -1,8 +1,7 @@
 'use strict';
 
 app.config(function ($stateProvider) {
-    $stateProvider.state('allorders', {
-        url: '/admin/orders',
+    $stateProvider.state('adminHome.allorders', {
         templateUrl: 'js/orders/all-orders.html',
         controller: 'OrdersCtrl',
         resolve: {

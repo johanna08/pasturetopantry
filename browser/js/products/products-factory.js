@@ -5,7 +5,6 @@ app.factory('Products', function($http, $log){
             .then(function(response){
                 return response.data;
             })
-            .catch($log.error)
         },
 
         getAllCategories: function(){
@@ -13,7 +12,6 @@ app.factory('Products', function($http, $log){
             .then(function(response){
                 return response.data;
             })
-            .catch($log.error)
         },
 
         fetchByCategory: function(id){
@@ -21,7 +19,6 @@ app.factory('Products', function($http, $log){
             .then(function(response){
                 return response.data;
             })
-            .catch($log.error)
         }
     }
 });
