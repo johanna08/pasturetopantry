@@ -27,7 +27,22 @@ app.directive('review', function(){
     restrict: 'E',
     templateUrl: 'js/reviews/review.html',
     scope: {
-      review: '='
+      review: '=',
+
+    },
+    link: function(scope){
+      scope.getStars = function(){
+        let stars = [], i = 0;
+        while (i < scope.review.rating){
+          stars.push(i++);
+        }
+        return stars;
+      };
+
+      function getUsername(email){
+        return email.split('@')[0];
+      }
+      scope.author = scope.review.user ? getUsername(scope.review.user.email) : "anonymous user";
     }
   }
 });
