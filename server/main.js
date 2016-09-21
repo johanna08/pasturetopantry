@@ -5,10 +5,10 @@ var https = require('https');
 var fs = require('fs');
 const dev = require('./env/development');
 var port = 1337;
-var secureConfig = {
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem')
-};
+// var secureConfig = {
+//   key: fs.readFileSync('./key.pem'),
+//   cert: fs.readFileSync('./cert.pem')
+// };
 
 if(process.env.NODE_ENV === "production" || process.env.NODE_ENV === "testing"){
 // Create a node server instance! cOoL!
