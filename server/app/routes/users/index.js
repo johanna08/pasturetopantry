@@ -42,7 +42,10 @@ router.delete('/:userId', function(req, res, next) {
 
 //update user
 router.put('/:userId', function(req, res, next) {
-  User.update({where: { id: req.params.userId} }, req.body.updates)
+  User.findById(req.params.userId)
+  .then(function(user) {
+    user.update(req.body)
+  })
   .then(function(user){
     res.status(200).send(user);
   })

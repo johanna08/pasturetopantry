@@ -26,6 +26,7 @@ router.get('/:categoryId', function(req, res, next) {
 router.post('/', function(req, res, next) {
   Category.findOrCreate({where: req.body})
   .spread(function(category, boolean) {
+    console.log(category, boolean)
     res.status(201).send(category);
   })
   .catch(next);
