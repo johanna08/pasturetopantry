@@ -6,9 +6,11 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function ($scope, FarmPics) {
+app.controller('HomeController', function ($scope, FarmPics, $sessionStorage) {
 
     // Images of beautiful Fullstack people.
     $scope.images = _.shuffle(FarmPics);
+
+    if(!$sessionStorage.cart) $sessionStorage.cart = [];
 
 });

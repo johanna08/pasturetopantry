@@ -25,6 +25,17 @@ router.get('/:orderId', function(req, res, next) {
   .catch(next);
 });
 
+router.put('/:orderId', function(req, res, next) {
+  Orders.findById(req.params.orderId)
+  .then(function(order){
+    order.update(req.body);
+  })
+  .then(function(order){
+    res.status(200).send(order);
+  })
+  .catch(next);
+});
+
 router.delete('/:orderId', function(req, res, next) {
   Orders.destroy({where: { id: req.params.orderId} })
   .then(function(){
