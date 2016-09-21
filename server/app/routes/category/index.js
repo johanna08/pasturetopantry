@@ -25,11 +25,23 @@ router.get('/:categoryId', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   Category.findOrCreate({where: req.body})
+  .spread(function(category, boolean) {
+    res.status(201).send(category);
+  })
+  .catch(next);
+});
+
+router.put('/', function(req, res, next) {
+  Category.findById(req.body.id)
+  .then(function(category){
+    category.update({type_name: req.body.type_name})
+  })
   .then(function(category) {
     res.status(201).send(category);
   })
   .catch(next);
 });
+
 
 router.delete('/:id', function(req, res, next) {
   Category.destroy({where: {id: req.params.id}})
