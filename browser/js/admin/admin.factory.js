@@ -9,7 +9,6 @@ app.factory('AdminFactory', function($http, $log, $state) {
     //product is from controller scope added by ng-model in form -> product obj
     addProduct: function(product, categories, selectCategories) {
       let addCategories = categories.reduce(function(arr, obj) {
-        console.log(obj.type_name);
         if (selectCategories.includes(obj.type_name)) arr.push(obj.id);
         return arr;
       }, []);

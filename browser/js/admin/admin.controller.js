@@ -37,9 +37,9 @@ app.controller('AdminCtrl', function($scope, AdminFactory, OrdersFactory, Produc
     if ($scope.newCategories.length) newCats = $scope.newCategories.match(/[a-zA-Z]+/g);
     let categoryPromises = newCats.map(function(category) {
       return AdminFactory.addCategory({type_name: category})
-      .then(function(category) {
-        selectedCategories.push(category.type_name);
-        $scope.categories.push(category);
+      .then(function(newCategory) {
+        selectedCategories.push(newCategory.type_name);
+        $scope.categories.push(newCategory);
       })
     });
     Promise.resolve(categoryPromises)
