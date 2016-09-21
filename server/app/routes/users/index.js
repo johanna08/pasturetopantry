@@ -33,7 +33,10 @@ router.get('/:userId', function(req, res, next) {
 
 //delete user
 router.delete('/:userId', function(req, res, next) {
-  User.destory({where: {id: req.params.userId} })
+  User.findById(req.params.userId)
+  .then(function(user){
+    return user.destroy()
+  })
   .then(function(){
     res.status(204).send();
   })
@@ -44,7 +47,7 @@ router.delete('/:userId', function(req, res, next) {
 router.put('/:userId', function(req, res, next) {
   User.findById(req.params.userId)
   .then(function(user) {
-    user.update(req.body)
+    return user.update(req.body)
   })
   .then(function(user){
     res.status(200).send(user);

@@ -22,7 +22,11 @@
    </div>
    <div class="col-xs-1">
       <h3>Reorder</h3>
-      <span class="glyphicon glyphicon-plus-sign" ng-click="reorder(order.items)" ui-sref="cart" ng-repeat="order in orders"></br></span>
+      <a ng-click="reorder(order.items)" ui-sref="cart" ng-repeat="order in orders"><span class="glyphicon glyphicon-plus-sign"></span></br></a>
+   </div>
+   <div class="col-xs-1">
+      <h3>Cancel</h3>
+      <a ng-click="cancelOrder(order.id)" ng-repeat="order in orders"><span class="glyphicon glyphicon-minus-sign"></span></br></a>
    </div>
   </div>
 
