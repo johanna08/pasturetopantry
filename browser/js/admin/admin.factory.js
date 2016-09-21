@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('AdminFactory', function($http, $log) {
+app.factory('AdminFactory', function($http, $log, $state) {
   function sendResponse(response) {
     return response.data;
   }
@@ -13,11 +13,17 @@ app.factory('AdminFactory', function($http, $log) {
         return arr;
       }, []);
       return $http.post('/api/products', {product: product, categories: addCategories})
-      .then(sendResponse);
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
     },
     deleteProduct: function(id) {
       return $http.delete('/api/products/' + id)
-      .then(sendResponse);
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
 
     },
     getOrders: function() {
@@ -25,19 +31,51 @@ app.factory('AdminFactory', function($http, $log) {
       .then(sendResponse);
     },
     addCategory: function(category) {
-      return $http.post('/api/categories', category)
-      .then(sendResponse);
+      console.log(category)
+      return $http.post('/api/categories/', category)
+      .then(sendResponse)
     },
     deleteCategory: function(id) {
       return $http.delete('/api/categories/' + id)
-      .then(sendResponse);
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
     },
     editCategory: function(categoryId, newCategoryName) {
       return $http.put('/api/categories', {id: categoryId, type_name: newCategoryName})
-      .then(sendResponse);
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
     },
     displayProductCategories: function(product) {
       return product.categories.map(category => category.type_name).join(', ');
+    },
+    getUsers: function() {
+      return $http.get('/api/users')
+      .then(sendResponse);
+    },
+    deleteUser: function(userId) {
+      $http.delete('/api/users/' + userId)
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
+    },
+    addAdmin(userId) {
+      $http.put('/api/users/' + userId, {isAdmin: true})
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
+    },
+    removeAdmin(userId) {
+      $http.put('/api/users/' + userId, {isAdmin: false})
+      .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      });
     }
   }
 });

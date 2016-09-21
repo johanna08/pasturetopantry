@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('OrdersFactory', function($http, $log) {
+app.factory('OrdersFactory', function($http, $log, $state) {
   function sendResponse(response) {
     return response.data;
   }
@@ -22,9 +22,12 @@ app.factory('OrdersFactory', function($http, $log) {
       .catch($log.error);
     },
     //e.g. update = {status: 'Active'}
-    updateOrderStatus: function(orderId, updates) {
+    updateOrderStatus: function(orderId, update) {
       return $http.put('/api/orders/' + orderId, update)
       .then(sendResponse)
+      .then(function(){
+        $state.reload();
+      })
       .catch($log.error);
     },
     deleteOrderItem: function(orderId, productId) {

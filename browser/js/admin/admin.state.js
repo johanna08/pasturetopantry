@@ -11,6 +11,9 @@ app.config(function ($stateProvider) {
           },
           products: function(Products) {
             return Products.fetchAll()
+          },
+          users: function(AdminFactory) {
+            return AdminFactory.getUsers();
           }
       }
     });
@@ -28,6 +31,11 @@ app.config(function ($stateProvider) {
 
     $stateProvider.state('adminHome.addCategory', {
         templateUrl: 'js/admin/add-category.html',
+        controller: 'AdminCtrl',
+    });
+
+    $stateProvider.state('adminHome.allUsers', {
+        templateUrl: 'js/admin/all-user.html',
         controller: 'AdminCtrl',
     });
 });

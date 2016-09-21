@@ -1,0 +1,31 @@
+<div>
+<span>
+    <input type="text" class="form-control" placeholder="search by user email" ng-model="userSearch"></input>
+    </select>
+</span>
+ <div class="row">
+   <div class="col-xs-2">
+   <h3>User</h3>
+      <p ng-repeat="user in users | filter: userSearch">{{user.email}}</br></p>
+   </div>
+   <div class="col-xs-2">
+      <h3>Admin</h3>
+      <p ng-repeat="user in users | filter: userSearch">{{user.isAdmin}}</br></p>
+   </div>
+   <div class="col-xs-2">
+      <h3>Add Admin</h4>
+      <div ng-repeat="user in users | filter: userSearch">
+        <a ng-click="addAdmin(user.id)"><span class="glyphicon glyphicon-thumbs-up"></span></br></a>
+      </div>
+   </div>
+   <div class="col-xs-2">
+      <h3>Remove Admin</h4>
+      <div ng-repeat="user in users | filter: userSearch">
+        <a ng-click="removeAdmin(user.id)"><span class="glyphicon glyphicon-thumbs-down"></span></br></a>
+      </div>
+   </div>
+   <div class="col-xs-1">
+      <h3>Delete</h3>
+      <a ng-click="deleteUser(user.id)" ng-repeat="user in users | filter: userSearch"><span class="glyphicon glyphicon-remove"></span></br></a>
+   </div>
+  </div>

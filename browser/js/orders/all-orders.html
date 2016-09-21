@@ -25,11 +25,11 @@
       <h3>Change Status</h4>
       <div ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}">
         <select ng-model="statusChange" ng-options="status for status in statusTypes">
-        </select><span ng-click="" class="glyphicon glyphicon-ok"></span></br>
+        </select><span ng-click="changeOrderStatus(order.id, statusChange)" class="glyphicon glyphicon-ok"></span></br>
       </div>
    </div>
    <div class="col-xs-1">
       <h3>Delete</h3>
-      <a ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}"><span class="glyphicon glyphicon-remove"></span></br></a>
+      <a ng-click="deleteOrder(order.id)" ng-repeat="order in orders | filter: userSearch | filter: {status: statusSearch}"><span class="glyphicon glyphicon-remove"></span></br></a>
    </div>
   </div>
