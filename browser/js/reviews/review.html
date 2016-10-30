@@ -1,0 +1,6 @@
+<div class = "well">
+  <h4>{{ review.title }}</h4>
+  <small>by <em>{{ author }}</em></small>
+  <p><span ng-repeat = "star in getStars()" class = "glyphicon glyphicon-star"></p>
+  <p> {{ review.content}}</p>
+</div>

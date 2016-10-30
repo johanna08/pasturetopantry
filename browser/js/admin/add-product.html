@@ -1,0 +1,39 @@
+<div class="addProduct">
+  <h3>Add A Product</h3>
+  <form id="add-product-form" name="addProductForm">
+    <fieldset>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input class="form-control" name="name" type="text" ng-model="product.name" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input class="form-control" name="price" type="number" ng-model="product.price" min="0" step=".01" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" name="description" ng-model="product.description" required>
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input class="form-control" name="quantity" type="number" ng-model="product.quantity" required min="1">
+        </div>
+        <div class="form-group">
+          <label for="source">Source</label>
+          <input class="form-control" name="source" type="text" ng-model="product.source" required>
+        </div>
+
+        <div class="form-group">
+          <label for="categories">Categories (select all that apply)</label>
+            <div class="checkbox">
+              <label ng-repeat="category in categories"><input type="checkbox" name="category" ng-model="categorySelection[category.type_name]">{{category.type_name}}</label>
+              <input class="form-control" name="newCategories" type="text" ng-model="newCategories" placeholder="enter new categories here">
+            </div>
+        </div>
+      <div class="form-group">
+          <button ui-sref="adminHome.productList" ng-click="addProduct(product)" type="submit" class="btn btn-success">Add Product</button>
+      </div>
+    </fieldset>
+  </form>
+</div>

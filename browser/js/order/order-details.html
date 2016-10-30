@@ -1,0 +1,21 @@
+<table class="table" id="orderdetail-page">
+   <thead>
+       <tr>
+           <th>Product</th>
+           <th>Price</th>
+           <th>Quantity</th>
+       </tr>
+   </thead>
+   <tbody>
+       <tr ng-repeat="item in order.items">
+           <td><a ui-sref="product({id: item.productId})">{{ item.product.name }}</a></td>
+           <td>{{ item.product.dollarPrice | currency }}</td>
+           <td>{{item.product.quantity}}</td>
+       </tr>
+       <tr>
+          <td>Total:</td>
+          <td>{{orderTotal | currency}}</td>
+          <td></td>
+       </tr>
+   </tbody>
+</table>

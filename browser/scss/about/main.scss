@@ -1,0 +1,30 @@
+#about {
+    max-width: 100vw;
+    height: 100vh;
+    background: url('/img/flowers.jpg') no-repeat center;
+
+  margin: 0 auto;
+  @include clearfix;
+
+  p {
+    padding-top: 20px;
+    margin: 0 auto;
+    font-size: 22px;
+    font-weight: 300;
+  }
+
+    img {
+      max-width: 100%;
+      height: 400px;
+      display: block;
+      margin: 0 auto;
+    }
+}
+
+#about-p{
+  width: 85vh;
+  padding: 15px;
+  opacity: 0.8;
+  background-color: #F5F5F5;
+  position: absolute;
+}

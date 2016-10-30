@@ -1,0 +1,27 @@
+<h1>All Products</h1>
+<div>
+<span>
+    <input type="text" class="form-control" placeholder="search by product name" ng-model="productSearch"></input>
+</span>
+ <div class="row">
+   <div class="col-xs-2">
+    <h3>Name</h3>
+    <a ng-repeat="product in products | filter: productSearch" ui-sref="editProduct({productId: product.id, product: product})">{{product.name}} </br></a>
+   </div>
+   <div class="col-xs-2">
+   <h3>Quantity</h3>
+      <p ng-repeat="product in products | filter: productSearch">{{product.quantity}}</br></p>
+   </div>
+   <div class="col-xs-2">
+      <h3>Price</h3>
+      <p ng-repeat="product in products | filter: productSearch">{{product.price | currency}}</br></p>
+   </div>
+   <div class="col-xs-2">
+      <h3>Categories</h3>
+      <p ng-repeat="product in products | filter: productSearch"></br>{{displayProductCategories(product)}}</p>
+   </div>
+   <div class="col-xs-1">
+      <h3>Delete</h3>
+      <a ng-repeat="product in products | filter: productSearch"><span class="glyphicon glyphicon-remove delete-button" ng-click="deleteProduct(product.id)"></span></br></a>
+   </div>
+  </div>

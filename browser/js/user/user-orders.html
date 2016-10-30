@@ -1,0 +1,33 @@
+<div>
+<span>
+    <select ng-model="statusSearch" ng-options="status for status in statusTypes">
+      <option value="">order status<option>
+    </select>
+</span>
+ <div class="row">
+   <div class="col-xs-2">
+    <h3>Order #</h3>
+    <a ng-repeat="order in orders" ui-sref="orderDetail({orderId: order.id, order: order})">{{order.id}} </br></a>
+   </div>
+   <div class="col-xs-2">
+      <h3>Order Total</h3>
+   </div>
+   <div class="col-xs-2">
+      <h3>Order Status</h3>
+      <p ng-repeat="order in orders">{{order.status}}</br></p>
+   </div>
+   <div class="col-xs-2">
+      <h3>Date Created</h3>
+      <p ng-repeat="order in orders">{{order.createdAt}}</br></p>
+   </div>
+   <div class="col-xs-1">
+      <h3>Reorder</h3>
+      <a ng-click="reorder(order.items)" ui-sref="cart" ng-repeat="order in orders"><span class="glyphicon glyphicon-plus-sign"></span></br></a>
+   </div>
+   <div class="col-xs-1">
+      <h3>Cancel</h3>
+      <a ng-click="cancelOrder(order.id)" ng-repeat="order in orders"><span class="glyphicon glyphicon-minus-sign"></span></br></a>
+   </div>
+  </div>
+
+<!-- | filter: {status: statusSearch} -->

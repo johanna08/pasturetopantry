@@ -1,0 +1,81 @@
+
+<div class="row">
+  <div ng-show="error" id="errormessage">
+    <h3>{{error}}</h3>
+  </div>
+  <div class="col-xs-8">
+    <form name="paymentform" action="/api/checkout" method="POST" id="payment-form">
+      <h3>Shipping Details:</h3>
+      <div class="form-row">
+        <label>
+          <span>Email Address</span>
+          <input ng-model="email" name="email" type="email" size="20" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>Name</span>
+          <input name="name" type="text" size="20" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>Street Address</span>
+          <input name="address" type="text" size="20" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>City</span>
+          <input name="city" type="text" size="20" required>
+        </label>
+        <label>
+          <span>State</span>
+          <input name="state" type="text" size="2" required>
+        </label>
+        <label>
+          <span>Zip Code</span>
+          <input name="zipcode" type="text" size="5" required>
+        </label>
+      </div>
+      <h3>Payment Info:</h3>
+      <span class="payment-errors"></span>
+      <div class="form-row">
+        <label>
+          <span>Card Number</span>
+          <input ng-model="card.number" type="text" size="20" data-stripe="number" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>Expiration (MM/YY)</span>
+          <input ng-model="card.exp_month" type="text" size="2" data-stripe="exp_month" required>
+        </label>
+        <span> / </span>
+        <input ng-model="card.exp_year" type="text" size="2" data-stripe="exp_year" required>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>CVC</span>
+          <input ng-model="card.cvc" type="text" size="4" data-stripe="cvc" required>
+        </label>
+      </div>
+      <input class="submit btn btn-success" value="Submit Payment" ng-click="submitPayment()" ng-disabled="paymentform.$invalid">
+    </form>
+  </div>
+  <div class="col-xs-4">
+    <h3>Order Summary:</h3>
+    <table class="table" id="checkout-page">
+       <tbody>
+           <tr ng-repeat="product in products">
+               <td>{{ product.name }}</td>
+               <td>{{ product.totalCost | currency }}</td>
+           </tr>
+           <tr>
+               <td>Order Total:</td>
+               <td>{{ total() | currency }}</td>
+           </tr>
+       </tbody>
+    </table>
+  </div>
+</div>

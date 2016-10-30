@@ -1,0 +1,24 @@
+<form id="review-form" name="reviewForm" ng-submit="">
+
+    <alert type="danger" ng-show="error">
+    </alert>
+    <h3>Leave a review: </h3>
+    </div>
+    <div class="form-group">
+        <label for="rating">Star Rating</label>
+        <select ng-model="review.rating" class="form-control" id="review-rating" placeholder="Enter Rating" ng-options = "rating for rating in [1,2,3,4,5]" required>
+          <option>{{ rating }}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" ng-model="review.title" class="form-control" id="review-title" placeholder="Enter Title" required>
+    </div>
+    <div class="form-group">
+        <label for="content">Review Details</label>
+        <input type="text" ng-model="review.content" class="form-control" id="review-content" placeholder="Enter your review" minlength=1 maxlength= 500 required>
+    </div>
+    <button class="btn btn-default" ng-click="submitReview()" ng-disabled = "reviewForm.$invalid">Submit Review</button>
+    <div ng-app="app" ng-controller="RatingController as rating" class="container">
+</div>
+</form>
